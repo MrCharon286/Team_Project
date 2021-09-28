@@ -17,14 +17,6 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
-		<!-- junit -->
-		<dependency>
-		    <groupId>junit</groupId>
-		    <artifactId>junit</artifactId>
-		    <version>4.13.2</version>
-		    <scope>test</scope>
-		</dependency>	
-	
 		<!-- modelmapper : 클래스 변환(entity와 DTO간 변환) -->
 		<dependency>
 		    <groupId>org.modelmapper</groupId>
