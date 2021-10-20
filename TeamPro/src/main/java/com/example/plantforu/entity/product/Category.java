@@ -10,20 +10,24 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString(exclude="ctgno2")
+@ToString(exclude="ctgno2")		// System.out.println(this)으로 출력할 때 무한 루프 방지
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 public class Category {
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="category_seq")
+	@SequenceGenerator(name="category_seq", sequenceName="category_seq", allocationSize=1)
+	@Column(name="category_no")
 	private Integer ctgno;
 	
-	@Column(length=10)
+	@Column(name="category_name", length=10)
 	private String ctgName;
 
-	@JsonIgnore
+	@JsonIgnore							// JSON으로 출력할 때 무한 루프 방지
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="category_no_two")
 	private Category ctgno2;
 	
 	// FetchType을 EAGER로 지정하면 대분류에 대해 left outer join한 다음 차례대로 중분류, 소분류에 대해 쿼리가 날아간다

@@ -10,6 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString(exclude="product")
+@EqualsAndHashCode(exclude= "product", callSuper=false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

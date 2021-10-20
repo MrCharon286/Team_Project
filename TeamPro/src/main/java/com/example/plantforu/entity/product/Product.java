@@ -27,7 +27,7 @@ public class Product extends BaseCreateTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="product_seq")
 	@SequenceGenerator(name="product_seq", sequenceName="product_seq", allocationSize=1)
-	private String pno;
+	private Integer pno;
 	
 	@Lob
 	private String pdetail;
@@ -53,6 +53,8 @@ public class Product extends BaseCreateTimeEntity {
 	@ManyToOne
 	@JoinColumn(name="ctgno")
 	private Integer ctgno;
+	
+	private String sellerId;
 	
 	@PrePersist
 	public void init() {
