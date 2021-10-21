@@ -8,7 +8,7 @@ import lombok.*;
 public class Cart {
 	private Integer pno;
 	private String pname;
-	private String manufacturer;
+	private String manufacturer;	
 	private Integer price;
 	private Integer count;
 	private String pimageno;

@@ -22,12 +22,15 @@ public class Address {
 	@SequenceGenerator(name="address_seq", sequenceName="address_seq", allocationSize=1)
 	private Integer ano;
 	
+	//여기부터
 	@Id
 	@Column(length=10)
-	private String nickname;
+	private String nickname;	//닉네임은 없습니다 확인부탁드립니다.
 	
 	@Column(length=7)
-	private String acode;
+	private String acode;	//혹시 우편 번호인지?
+	
+	//여기까지 우린 닉네임없고 acode라는 물리이름을 가진에 없습니다 확인부탁드립니다.
 	
 	@Column(length=30)
 	private String address1;
@@ -35,5 +38,5 @@ public class Address {
 	@Column(length=30)
 	private String address2;
 	
-	private boolean isDefault;
+	private boolean isDefault;		//isDefault 는 어떤걸 의미하는지요?
 }
