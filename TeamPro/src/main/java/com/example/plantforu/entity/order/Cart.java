@@ -7,25 +7,24 @@ import lombok.*;
 @Builder
 public class Cart {
 	private Integer pno;
-	private String pname;
-	private String manufacturer;
-	private Integer price;
-	private Integer count;
+	private String pname;	
+	private Integer pprice;
+	private Integer pcount;
 	private String pimageno;
-	private Integer cprice;
+	private Integer ctotalPrice;
 	
 	public void increase() {
-		this.count++;
-		this.cprice = this.count * this.price;
+		this.pcount++;
+		this.ctotalPrice = this.pcount * this.pprice;
 	}
 	
 	public void decrease() {
-		if(this.count>1)
-			this.count--;
-		this.cprice = this.count * this.price;
+		if(this.pcount>1)
+			this.pcount--;
+		this.ctotalPrice = this.pcount * this.pprice;
 	}
 
 	public OrderItem toOrderItem() {
-		return OrderItem.builder().pno(pno).pname(pname).manufacturer(manufacturer).price(price).count(count).orderItemPrice(cprice).pimageno(pimageno).build();
+		return OrderItem.builder().pno(pno).pname(pname).pprice(pprice).pcount(pcount).orderItemPrice(ctotalPrice).pimageno(pimageno).build();
 	}
 }
