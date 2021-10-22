@@ -10,7 +10,7 @@ public class Cart {
 	private String pname;	
 	private Integer pprice;
 	private Integer pcount;
-	private String pimageno;
+	private String pimage;
 	private Integer ctotalPrice;
 	
 	public void increase() {
@@ -25,6 +25,10 @@ public class Cart {
 	}
 
 	public OrderItem toOrderItem() {
+<<<<<<< HEAD
 		return OrderItem.builder().pno(pno).pname(pname).pprice(pprice).pcount(pcount).odetailPrice(ctotalPrice).pimageno(pimageno).build();
+=======
+		return OrderItem.builder().pname(pname).pprice(pprice).pcount(pcount).ototalPrice(ctotalPrice).pimage(pimage).build();
+>>>>>>> master
 	}
 }

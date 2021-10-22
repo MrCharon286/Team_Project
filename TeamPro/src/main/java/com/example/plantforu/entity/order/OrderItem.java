@@ -3,6 +3,7 @@
 import javax.persistence.*;
 
 import com.example.plantforu.entity.*;
+import com.example.plantforu.entity.product.Product;
 import com.example.plantforu.util.*;
 import com.fasterxml.jackson.annotation.*;
 
@@ -21,8 +22,17 @@ import lombok.experimental.*;
 public class OrderItem {
 	@PrePersist
 	private void init() {
+<<<<<<< HEAD
 		this.isreviewd = true;
+=======
+		this.isReviewed = true;
+>>>>>>> master
 	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="order_item_seq")
+	@SequenceGenerator(name="order_item_seq", sequenceName="order_item_seq", allocationSize=1)
+	private Integer orderItemNo;
 	
 	@Id
 	@ManyToOne
@@ -31,25 +41,31 @@ public class OrderItem {
 	private Order order;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="order_item_seq")
-	@SequenceGenerator(name="order_item_seq", sequenceName="order_item_seq", allocationSize=1)
-	private Integer ono;
-	
-	private Integer pno;
+	@ManyToOne
+	@JoinColumn(name="pno")
+	@JsonIgnore
+	private Product product;
 	
 	@Column(length=20)
 	private String pname;
-	
-	@Column(length=20)		
+		
 	private Integer pprice;
 	
 	private Integer pcount;
 	
+<<<<<<< HEAD
 	private Integer odetailPrice;
+=======
+	private Integer ototalPrice;
+>>>>>>> master
 	
-	@Column(length=100)
-	private String pimageno;
+	@Column(length=20)
+	private String pimage;
 	
+<<<<<<< HEAD
 	private Boolean isreviewd;
+=======
+	private Boolean isReviewed;
+>>>>>>> master
 
 }

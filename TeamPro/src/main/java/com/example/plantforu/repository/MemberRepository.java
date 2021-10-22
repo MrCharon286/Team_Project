@@ -12,8 +12,6 @@ public interface MemberRepository extends CrudRepository<Member, String> {
 
 	boolean existsByUsername(String username);
 
-	Optional<Member> findByCheckcode(String checkcode);
-
 	@Query("select m.useremail from Member m where m.username=:username")
 	Optional<String> findUsernameByEmail(String email);
 

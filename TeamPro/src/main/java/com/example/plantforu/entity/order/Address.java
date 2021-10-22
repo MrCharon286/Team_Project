@@ -12,20 +12,23 @@ import lombok.experimental.*;
 @NoArgsConstructor
 @Accessors(chain=true)
 @Builder
-@IdClass(Aname.class)
+@IdClass(AddressId.class)
 @Entity
 public class Address {
+	
 	@Id
 	@ManyToOne
+<<<<<<< HEAD
 	@JoinColumn(name = "useremail")
+=======
+	@JoinColumn(name="useremail")
+>>>>>>> master
 	private Member member;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="address_seq")
 	@SequenceGenerator(name="address_seq", sequenceName="address_seq", allocationSize=1)
 	private Integer ano;
-	
-	
 	
 	@Column(length=7)
 	private String anum;

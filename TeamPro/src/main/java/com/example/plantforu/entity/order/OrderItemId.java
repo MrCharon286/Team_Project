@@ -9,4 +9,5 @@ import lombok.*;
 public class OrderItemId implements Serializable {
 	private Integer order;
 	private Integer ono;
+	private Integer pno;
 }

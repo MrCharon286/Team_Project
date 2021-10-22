@@ -1,14 +1,8 @@
 package com.example.plantforu.entity.seller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -20,14 +14,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude="sellerauthorities")
 @Builder
 @Accessors(chain=true)
 @Entity
@@ -35,8 +27,7 @@ import lombok.experimental.Accessors;
 public class Seller {
 	@PrePersist
 	public void init() {
-		sloginFailCnt = 0;
-		senabled = false;
+
 	}
 
 	@Id
@@ -58,26 +49,9 @@ public class Seller {
 
 	@Column(length = 50)
 	private String saddress;
-
+	
+	@Column(length = 20)
 	@JsonIgnore
-	private Integer sloginFailCnt;
+	private String sauthority;
 
-	@JsonIgnore
-	private Boolean senabled;
-
-	@JsonIgnore
-	@Column(length=20)
-	private String scheckcode;
-
-	@JsonIgnore
-	@OneToMany(mappedBy="seller", cascade={CascadeType.MERGE, CascadeType.REMOVE})
-	private Set<SellerAuthority> sellerauthorities;
-
-	public void selleraddJoinInfo(String scheckcode, String sencodedPassword, List<String> sellerauthorities) {
-		if(this.sellerauthorities==null)
-			this.sellerauthorities = new HashSet<SellerAuthority>();
-		this.scheckcode = scheckcode;
-		this.spassword = sencodedPassword;
-		sellerauthorities.forEach(sellerauthorityName->this.sellerauthorities.add(new SellerAuthority(this, sellerauthorityName)));
-	}
 }
