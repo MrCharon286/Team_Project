@@ -43,6 +43,6 @@ public class Order extends BaseCreateTimeEntity  {
 		this.pprice = this.pprice==null? 0 : this.pprice;
 		orderItem.setOrder(this);
 		this.orderItems.add(orderItem);
-		this.pprice += orderItem.getOrderItemPrice();
+		this.pprice += orderItem.getOtotalPrice();
 	}
 }

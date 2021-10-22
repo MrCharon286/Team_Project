@@ -7,7 +7,7 @@ import org.springframework.data.repository.*;
 
 import com.example.plantforu.entity.order.*;
 
-public interface AddressRepository extends CrudRepository<Address, Aname> {
+public interface AddressRepository extends CrudRepository<Address, AddressId> {
 	@Query("select a from Address a where a.username=:useremail and a.isDefault=true")
 	public Address findDefault(String useremail);
 

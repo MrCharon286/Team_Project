@@ -2,6 +2,8 @@ package com.example.plantforu.entity.order;
 
 import javax.persistence.*;
 
+import com.example.plantforu.entity.member.Member;
+
 import lombok.*;
 import lombok.experimental.*;
 
@@ -10,19 +12,19 @@ import lombok.experimental.*;
 @NoArgsConstructor
 @Accessors(chain=true)
 @Builder
-@IdClass(Aname.class)
+@IdClass(AddressId.class)
 @Entity
 public class Address {
+	
 	@Id
-	@Column(length=30)
-	private String useremail;
+	@ManyToOne
+	@JoinColumn(name="useremail")
+	private Member member;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="address_seq")
 	@SequenceGenerator(name="address_seq", sequenceName="address_seq", allocationSize=1)
 	private Integer ano;
-	
-	
 	
 	@Column(length=7)
 	private String acode;

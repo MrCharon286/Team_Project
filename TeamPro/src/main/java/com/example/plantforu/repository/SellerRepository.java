@@ -12,7 +12,7 @@ public interface SellerRepository extends CrudRepository<Seller, String> {
 
 	boolean existsByUsername(String sname);
 
-	@Query("select s.seller from Member s where s.sname=:sname")
+	@Query("select s.seller from Seller s where s.sname=:sname")
 	Optional<String> findUsernameByEmail(String email);
 
 }
