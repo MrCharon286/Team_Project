@@ -12,8 +12,6 @@ public interface SellerRepository extends CrudRepository<Seller, String> {
 
 	boolean existsByUsername(String sname);
 
-	Optional<Seller> findByCheckcode(String checkcode);
-
 	@Query("select s.seller from Member s where s.sname=:sname")
 	Optional<String> findUsernameByEmail(String email);
 
