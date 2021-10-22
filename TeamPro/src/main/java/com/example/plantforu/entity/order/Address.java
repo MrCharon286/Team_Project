@@ -10,7 +10,7 @@ import lombok.experimental.*;
 @NoArgsConstructor
 @Accessors(chain=true)
 @Builder
-@IdClass(AddressId.class)
+@IdClass(Aname.class)
 @Entity
 public class Address {
 	@Id
@@ -22,9 +22,7 @@ public class Address {
 	@SequenceGenerator(name="address_seq", sequenceName="address_seq", allocationSize=1)
 	private Integer ano;
 	
-	@Id
-	@Column(length=10)
-	private String nickname;
+	
 	
 	@Column(length=7)
 	private String acode;

@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class AddressId implements Serializable  {
+public class Aname implements Serializable  {
 	private String useremail;
 	private Integer ano;
 }
