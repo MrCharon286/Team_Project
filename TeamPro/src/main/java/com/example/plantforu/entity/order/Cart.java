@@ -25,6 +25,6 @@ public class Cart {
 	}
 
 	public OrderItem toOrderItem() {
-		return OrderItem.builder().pno(pno).pname(pname).pprice(pprice).pcount(pcount).orderItemPrice(ctotalPrice).pimageno(pimageno).build();
+		return OrderItem.builder().pno(pno).pname(pname).pprice(pprice).pcount(pcount).odetailPrice(ctotalPrice).pimageno(pimageno).build();
 	}
 }

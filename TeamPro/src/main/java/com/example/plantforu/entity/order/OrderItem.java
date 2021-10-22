@@ -21,7 +21,7 @@ import lombok.experimental.*;
 public class OrderItem {
 	@PrePersist
 	private void init() {
-		this.isReviewAvailable = true;
+		this.isreviewd = true;
 	}
 	
 	@Id
@@ -45,11 +45,11 @@ public class OrderItem {
 	
 	private Integer pcount;
 	
-	private Integer orderItemPrice;
+	private Integer odetailPrice;
 	
 	@Column(length=100)
 	private String pimageno;
 	
-	private Boolean isReviewAvailable;
+	private Boolean isreviewd;
 
 }

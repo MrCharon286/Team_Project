@@ -14,8 +14,9 @@ import lombok.experimental.*;
 @Entity
 public class Address {
 	@Id
-	@Column(length=30)
-	private String useremail;
+	@ManyToOne
+	@JoinColumn(name = useremail)
+	private Useremail useremail;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="address_seq")
@@ -25,7 +26,7 @@ public class Address {
 	
 	
 	@Column(length=7)
-	private String acode;
+	private String anum;
 	
 	@Column(length=30)
 	private String address1;
