@@ -1,9 +1,11 @@
-package com.example.plantforu.entity.member;
+package com.example.plantforu.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import com.example.plantforu.entity.member.Member;
 
 public interface MemberRepository extends CrudRepository<Member, String> {
 	boolean existsByUseremail(String useremail);
