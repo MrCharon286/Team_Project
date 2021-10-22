@@ -25,7 +25,7 @@ public class Order extends BaseCreateTimeEntity  {
 	@SequenceGenerator(name="order_seq", sequenceName="order_seq", allocationSize=1)
 	private Integer ono;
 	
-	private Integer pPrice;
+	private Integer pprice;
 	
 	@ManyToOne
 	@JoinColumns({@JoinColumn(name="orderer", referencedColumnName="useremail"), @JoinColumn(name="ano", referencedColumnName="ano")})
@@ -40,9 +40,9 @@ public class Order extends BaseCreateTimeEntity  {
 	public void addOrderItem(OrderItem orderItem) {
 		if(this.orderItems==null)
 			this.orderItems = new ArrayList<>();
-		this.pPrice = this.pPrice==null? 0 : this.pPrice;
+		this.pprice = this.pprice==null? 0 : this.pprice;
 		orderItem.setOrder(this);
 		this.orderItems.add(orderItem);
-		this.pPrice += orderItem.getOrderItemPrice();
+		this.pprice += orderItem.getOrderItemPrice();
 	}
 }

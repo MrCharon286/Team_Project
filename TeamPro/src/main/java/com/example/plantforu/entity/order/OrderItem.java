@@ -26,31 +26,29 @@ public class OrderItem {
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name="orderNo")
+	@JoinColumn(name="ono")
 	@JsonIgnore
 	private Order order;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="order_item_seq")
 	@SequenceGenerator(name="order_item_seq", sequenceName="order_item_seq", allocationSize=1)
-	private Integer orderItemNo;
+	private Integer ono;
 	
 	private Integer pno;
 	
 	@Column(length=20)
 	private String pname;
 	
-	@Column(length=20)
-	private String manufacturer;
+	@Column(length=20)		
+	private Integer pprice;
 	
-	private Integer price;
-	
-	private Integer count;
+	private Integer pcount;
 	
 	private Integer orderItemPrice;
 	
 	@Column(length=100)
-	private String image;
+	private String pimageno;
 	
 	private Boolean isReviewAvailable;
 

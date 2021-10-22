@@ -8,5 +8,5 @@ import lombok.*;
 @EqualsAndHashCode
 public class OrderItemId implements Serializable {
 	private Integer order;
-	private Integer orderItemNo;
+	private Integer ono;
 }
