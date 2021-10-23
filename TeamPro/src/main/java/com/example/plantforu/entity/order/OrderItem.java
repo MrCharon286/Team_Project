@@ -22,11 +22,7 @@ import lombok.experimental.*;
 public class OrderItem {
 	@PrePersist
 	private void init() {
-<<<<<<< HEAD
-		this.isreviewd = true;
-=======
 		this.isReviewed = true;
->>>>>>> master
 	}
 
 	@Id
@@ -53,19 +49,10 @@ public class OrderItem {
 	
 	private Integer pcount;
 	
-<<<<<<< HEAD
-	private Integer odetailPrice;
-=======
 	private Integer ototalPrice;
->>>>>>> master
 	
 	@Column(length=20)
 	private String pimage;
 	
-<<<<<<< HEAD
-	private Boolean isreviewd;
-=======
 	private Boolean isReviewed;
->>>>>>> master
-
 }

@@ -25,10 +25,6 @@ public class Cart {
 	}
 
 	public OrderItem toOrderItem() {
-<<<<<<< HEAD
-		return OrderItem.builder().pno(pno).pname(pname).pprice(pprice).pcount(pcount).odetailPrice(ctotalPrice).pimageno(pimageno).build();
-=======
 		return OrderItem.builder().pname(pname).pprice(pprice).pcount(pcount).ototalPrice(ctotalPrice).pimage(pimage).build();
->>>>>>> master
 	}
 }

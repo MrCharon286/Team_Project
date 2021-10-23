@@ -18,11 +18,7 @@ public class Address {
 	
 	@Id
 	@ManyToOne
-<<<<<<< HEAD
-	@JoinColumn(name = "useremail")
-=======
 	@JoinColumn(name="useremail")
->>>>>>> master
 	private Member member;
 	
 	@Id
