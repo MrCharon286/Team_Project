@@ -36,4 +36,9 @@ public class Address {
 	private String address2;
 	
 	private boolean isDefault;
+
+	public Address setUseremail(String useremail) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
