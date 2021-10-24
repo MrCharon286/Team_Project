@@ -55,7 +55,7 @@ public class CartService {
 		for(Cart cart:carts) {
 			if(cart.getPno()==pno) {
 				Integer pcount = cart.getPcount()+1;
-				Integer pstock = dao.readPstock(pno);
+				Integer pstock = dao.readStock(pno);
 				if(pcount>=pstock)
 					throw new PlantforuException.OutOfStockException();
 				cart.increase();

@@ -14,7 +14,7 @@ public class AddressDto {
 		private String address2;
 		private Boolean isDefault;
 		public Address toEntity() {
-			return Address.builder().useremail(useremail).anum(anum).address1(address1).address2(address2).isDefault(isDefault).build();
+			return Address.builder().(useremail).anum(anum).address1(address1).address2(address2).isDefault(isDefault).build();
 		}
 	}
 }
