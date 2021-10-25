@@ -66,6 +66,7 @@ public class Product extends BaseCreateTimeEntity {
 		this.pavgOfRating = 0.0;
 		this.pstock = 0;
 		this.pprice = 0;
+		this.papproval = false;
 	}
 	
 	public void addReview(Review review) {

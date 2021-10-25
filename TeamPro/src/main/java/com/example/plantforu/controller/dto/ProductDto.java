@@ -1,11 +1,13 @@
 package com.example.plantforu.controller.dto;
 
+import java.time.*;
 import java.util.*;
 
 import org.springframework.web.multipart.*;
 
 import com.example.plantforu.entity.product.*;
 import com.example.plantforu.util.*;
+import com.fasterxml.jackson.annotation.*;
 
 import lombok.*;
 
@@ -68,6 +70,17 @@ public class ProductDto {
 		}
 	}
 
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class DisApproved {
+		private Integer pno;
+		private String pname;
+		@JsonProperty("orderday")
+		@JsonFormat(pattern="yyyy년 MM월 dd일")
+		private LocalDateTime createTime;
+	}	
+	
 	@Data
 	@AllArgsConstructor
 	@NoArgsConstructor

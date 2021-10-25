@@ -9,6 +9,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 
 import com.example.plantforu.controller.dto.*;
+import com.example.plantforu.controller.dto.ProductDto.*;
 import com.example.plantforu.entity.product.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
@@ -18,7 +19,7 @@ import lombok.*;
 
 @RequiredArgsConstructor
 @Repository
-public class ProductDslRepositoy {
+public class ProductDslRepository {
 	// 엔티티의 관리하는 역할 수행
 	private final EntityManager entityManager;
 	// QueryDsl을 사용하여 JPQL 쿼리를 처리하는 역할
@@ -43,6 +44,11 @@ public class ProductDslRepositoy {
 			.where(withCategory(ctgno))
 			.orderBy(new OrderSpecifier(isAsc==true? Order.ASC : Order.DESC, Expressions.path(Product.class, fieldName)))
 			.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+	}
+	
+	public List<DisApproved> disApprovedList() {
+		return factory.select(Projections.constructor(ProductDto.DisApproved.class, product.pno, product.pname, product.createTime))
+			.from(product).where(product.papproval.eq(false)).orderBy(product.createTime.desc()).fetch();
 	}
 	
 	// 복합 조건 : 복합 boolean 표현식은 BooleanExpression으로 작성한다. 보통 where절을 동적으로 생성할 때 사용
