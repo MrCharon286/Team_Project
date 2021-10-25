@@ -1,10 +1,19 @@
 package com.example.plantforu.entity.member;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,7 +29,6 @@ import lombok.experimental.Accessors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude="authorities")
 @Builder
 @Accessors(chain=true)
 @Entity
@@ -28,6 +36,8 @@ import lombok.experimental.Accessors;
 public class Member {
 	@PrePersist
 	public void init() {
+		loginFailCnt = 0;
+		enabled = false;
 		userpoint = 0;
 	}
 
@@ -51,4 +61,31 @@ public class Member {
 	@Column(length = 20)
 	@JsonIgnore
 	private String authority;
+	//권한 부여?
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
+		if (this.useremail.equals("user")) {
+			auth.add(new SimpleGrantedAuthority("ROLE_USER"));
+		} 
+		return auth;
+	}
+	@JsonIgnore
+	private Integer loginFailCnt;
+	
+	@JsonIgnore
+	private Boolean enabled;
+
+	public void loginSuccess() {
+		this.loginFailCnt = 0;
+		this.enabled = true;
+	}
+
+	public void loginFail() {
+		if(this.loginFailCnt<4)
+			this.loginFailCnt++;
+		else {
+			this.loginFailCnt++;
+			this.enabled = false;
+		}
+	}
 }
