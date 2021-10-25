@@ -55,5 +55,4 @@ public class OrderItem {
 	private String pimage;
 	
 	private Boolean isReviewed;
-
 }

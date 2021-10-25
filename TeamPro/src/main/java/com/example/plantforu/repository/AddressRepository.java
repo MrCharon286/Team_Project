@@ -17,7 +17,7 @@ public interface AddressRepository extends CrudRepository<Address, AddressId> {
 
 	@Modifying
 	@Query("update Address a set a.isDefault=false where a.useremail=?1")
-	public void setDefaultToFalse(String loginId);
+	public void setDefaultToFalse(String useremail);
 
 	public Address findByAno(Integer ano);
 

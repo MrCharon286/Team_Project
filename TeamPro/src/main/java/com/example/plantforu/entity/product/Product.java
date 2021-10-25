@@ -50,6 +50,9 @@ public class Product extends BaseCreateTimeEntity {
 	@OneToMany(mappedBy="product", cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<Review> reviews;
 	
+	@OneToMany(mappedBy="product", cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<Qna> qnas;
+	
 	@ManyToOne
 	@JoinColumn(name="ctgno")
 	private Integer ctgno;
@@ -63,6 +66,7 @@ public class Product extends BaseCreateTimeEntity {
 		this.pavgOfRating = 0.0;
 		this.pstock = 0;
 		this.pprice = 0;
+		this.papproval = false;
 	}
 	
 	public void addReview(Review review) {
@@ -72,5 +76,11 @@ public class Product extends BaseCreateTimeEntity {
 		this.pcountOfRating++;
 		this.ptotalOfRating+=review.getRating();
 		this.pavgOfRating=this.ptotalOfRating/(double)this.pcountOfRating;	
+	}
+	
+	public void addQna(Qna qna) {
+		if(this.qnas==null)
+			this.qnas = new HashSet<>();
+		qnas.add(qna);
 	}
 }
