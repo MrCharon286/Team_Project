@@ -26,6 +26,10 @@ public class Address {
 	@SequenceGenerator(name="address_seq", sequenceName="address_seq", allocationSize=1)
 	private Integer ano;
 	
+	@Id
+	@Column(length=10)
+	private String username;
+	
 	@Column(length=7)
 	private String anum;
 	

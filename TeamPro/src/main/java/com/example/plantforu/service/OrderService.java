@@ -43,8 +43,8 @@ public class OrderService {
 	public void orderProduct(OrderDto.OrderProduct dto) {
 		HttpSession session = PlantforuUtil.getSession();
 		Product product = productDao.findById(dto.getPno()).orElseThrow(PlantforuException.ProductNotFoundException::new);
-		OrderItem orderItem = OrderItem.builder().pno(dto.getPno()).name(product.getPname()).price(product.getPprice())
-			.count(dto.getPcount()).orderItemPrice(dto.getPcount()*product.getPprice()).image(PlantforuConstant.PRODUCT_URL+product.getPimage()).build();
+		OrderItem orderItem = OrderItem.builder().orderItemNo(dto.getPno()).pname(product.getPname()).pprice(product.getPprice())
+			.pcount(dto.getPcount()).ototalPrice(dto.getPcount()*product.getPprice()).pimage(PlantforuConstant.PRODUCT_URL+product.getPimage()).build();
 		session.setAttribute("product", Arrays.asList(orderItem));
 	}
 
@@ -84,7 +84,7 @@ public class OrderService {
 	}
 
 	@Transactional(readOnly=true)
-	public List<OrderDto.ReviewAvailable> reviewAvailableList(String loginId) {
+	public List<OrderDto.isReviewAvailable> reviewAvailableList(String loginId) {
 		return orderDslDao.reviewAvailableList(loginId);
 	}
 

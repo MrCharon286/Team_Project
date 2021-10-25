@@ -64,8 +64,8 @@ public class OrderController {
 	}
 
 	@PostMapping("/orders/payment")
-	public ResponseEntity<Void> payment(String select, Integer addressNo, Principal principal) {
-		service.payment(select, addressNo, principal.getName());
+	public ResponseEntity<Void> payment(String select, Integer ano, Principal principal) {
+		service.payment(select, ano, principal.getName());
 		return ResponseEntity.ok(null);
 	}
 	

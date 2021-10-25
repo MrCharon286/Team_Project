@@ -19,12 +19,12 @@ import lombok.*;
 public class AddressController {
 	private final AddressService service;
 	
-	@GetMapping(path="/addresse", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="/address", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Address>> readAddresses(Principal principal) {
 		return ResponseEntity.ok(service.readAddresses(principal.getName()));
 	}
 	
-	@PostMapping(path="/addresse/new", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="/address/new", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> add(AddressDto.Add dto, Principal principal) {
 		return ResponseEntity.ok(service.add(dto, principal.getName()));
 	}

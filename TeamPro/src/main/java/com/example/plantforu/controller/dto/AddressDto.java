@@ -8,13 +8,13 @@ import lombok.*;
 public class AddressDto {
 	@Data
 	public static class Add {
-		private String useremail;
+		private String username;
 		private String anum;
 		private String address1;
 		private String address2;
 		private Boolean isDefault;
 		public Address toEntity() {
-			return Address.builder().anum(anum).address1(address1).address2(address2).isDefault(isDefault).build();
+			return Address.builder().username(username).anum(anum).address1(address1).address2(address2).isDefault(isDefault).build();
 		}
 	}
 }
