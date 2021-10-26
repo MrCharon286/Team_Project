@@ -13,7 +13,7 @@ public interface MemberRepository extends CrudRepository<Member, String> {
 	boolean existsByUsertel(String usertel);
 
 	@Query("select m.useremail from Member m where m.usertel=:usertel")
-	Optional<String> findEmailbByUsertel(String usertel);
+	Optional<String> findEmailByUsertel(String usertel);
 
 	Optional<String> findByUserEmail(String useremail);
 

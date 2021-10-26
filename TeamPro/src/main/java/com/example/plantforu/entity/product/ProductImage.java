@@ -15,7 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@IdClass(ReviewId.class)
+@IdClass(ProductImageId.class)
 @Entity
 public class ProductImage extends BaseCreateTimeEntity {
 	@Id

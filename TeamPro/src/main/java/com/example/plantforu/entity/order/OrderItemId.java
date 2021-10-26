@@ -7,7 +7,7 @@ import lombok.*;
 @SuppressWarnings("unused")
 @EqualsAndHashCode
 public class OrderItemId implements Serializable {
+	private Integer orderItemNo;
 	private Integer order;
-	private Integer ono;
-	private Integer pno;
+	private Integer product;
 }
