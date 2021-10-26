@@ -26,8 +26,12 @@ public class Address {
 	@SequenceGenerator(name="address_seq", sequenceName="address_seq", allocationSize=1)
 	private Integer ano;
 	
+	@Id
+	@Column(length=10)
+	private String username;
+	
 	@Column(length=7)
-	private String acode;
+	private String anum;
 	
 	@Column(length=30)
 	private String address1;
@@ -36,4 +40,9 @@ public class Address {
 	private String address2;
 	
 	private boolean isDefault;
+
+	public Address setUseremail(String useremail) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

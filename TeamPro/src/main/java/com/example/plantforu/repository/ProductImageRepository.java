@@ -10,4 +10,6 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Prod
 
 	List<ProductImage> findByPnoOrderByPimagenoDesc(Integer pno);
 
+	Optional<ProductImage> findById(Integer pimageno);
+
 }

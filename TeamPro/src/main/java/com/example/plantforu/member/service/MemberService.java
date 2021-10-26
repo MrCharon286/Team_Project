@@ -31,12 +31,12 @@ public class MemberService {
 	
 	public void emailAvailabelCheck(String useremail) {
 		if(dao.existsByUseremail(useremail)==true)
-			throw new MemberFail.EmailExistException();
+			throw new MemberFail.UseremailExistException();
 	}
 	@Transactional(readOnly=true)
 	public void telAvailabelCheck(String usertel) {
 		if(dao.existsByUsertel(usertel)==true)
-			throw new MemberFail.UsernameExistException();
+			throw new MemberFail.UsertelExistException();
 	}
 
 	public void join(MemberDto.Join dto) {

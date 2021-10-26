@@ -4,10 +4,10 @@ import lombok.*;
 
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
 public class MemberFail {
-	public static class UsernameExistException extends RuntimeException {
+	public static class UseremailExistException extends RuntimeException {
 	}
 
-	public static class EmailExistException extends RuntimeException {
+	public static class UsertelExistException extends RuntimeException {
 	}
 
 	public static class JoinFailException extends RuntimeException {
