@@ -47,13 +47,12 @@ public class Product extends BaseCreateTimeEntity {
 	
 	private Boolean papproval;
 	
-	@OneToMany(mappedBy="product", cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToMany(mappedBy="product", cascade= {CascadeType.REMOVE})
 	private Set<Review> reviews;
 	
-	@OneToMany(mappedBy="product", cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToMany(mappedBy="product", cascade= {CascadeType.REMOVE})
 	private Set<Qna> qnas;
 	
-	@ManyToOne
 	@JoinColumn(name="ctgno")
 	private Integer ctgno;
 	

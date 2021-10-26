@@ -8,5 +8,5 @@ import lombok.*;
 @EqualsAndHashCode
 public class ProductImageId implements Serializable {
 	private Integer product;
-	private Integer qno;
+	private Integer pimageno;
 }

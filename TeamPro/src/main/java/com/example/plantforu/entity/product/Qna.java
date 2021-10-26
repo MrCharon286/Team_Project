@@ -15,7 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@IdClass(ReviewId.class)
+@IdClass(QnaId.class)
 @Entity
 public class Qna extends BaseCreateTimeEntity {
 	@Id
