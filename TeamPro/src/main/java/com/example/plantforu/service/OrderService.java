@@ -67,7 +67,7 @@ public class OrderService {
 		
 		List<OrderItem> orders = (List<OrderItem>)session.getAttribute(select);
 		
-		Address address = addressDao.findById(new Aname(loginId, ano)).orElseThrow(PlantforuException.AddressNotFoundException::new);
+		Address address = addressDao.findById(new AddressId(loginId, ano)).orElseThrow(PlantforuException.AddressNotFoundException::new);
 		Order order = Order.builder().address(address).deliveryStatus(DeliveryStatus.PAY).build();
 		
 		// Address.builder().addressNo(1).username("spring").build()와 같이 파라미터를 만들어 넘기면
