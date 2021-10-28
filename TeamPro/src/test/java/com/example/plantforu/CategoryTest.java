@@ -11,9 +11,9 @@ import com.example.plantforu.entity.product.*;
 import com.example.plantforu.repository.*;
 
 @SpringBootTest
-public class ProductTest {
+public class CategoryTest {
 	@Autowired
-	private ProductRepository dao;
+	private CategoryRepository dao;
 	
 	// @Test
 	public void initTest() {
@@ -22,8 +22,8 @@ public class ProductTest {
 	
 	@Test
 	public void test1() {
-		for(int i=6; i<=7; i++) {
-			dao.save(Product.builder().ctgno(1).pno(i).pdetail("aaa").pimage("bbb").pprice(2000).pname("ccc").build());
+		for(int i=1; i<=5; i++) {
+			dao.save(Category.builder().ctgno(i).ctgName(i+"호기").build());
 		}
 	}
 }
