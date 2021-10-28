@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.plantforu;
 
 import org.junit.*;
 import org.springframework.boot.test.context.*;

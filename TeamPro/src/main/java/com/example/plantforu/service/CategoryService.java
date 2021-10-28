@@ -31,23 +31,7 @@ public class CategoryService {
 	@Transactional
 	public void add(CategoryDto.Add dto) {
 		Category category = dto.toEntity();
-		// 추가할 category의 부모 카테고리를 찾아 자식으로 추가
-		if(dto.getSuperCtgno()!=null && dto.getSuperCtgno().equals("")==false) {
-			Category superCategory = dao.findById(dto.getSuperCtgno()).get();
-			superCategory.addCategory(category);
-		}
-		// 부모 카테고리가 없다면(대분류라면) 그냥 추가
-		else 
 			dao.save(category);
-	}
-	
-	// 카테고리를 파라미터로 자식 카테고리를 출력 - 상품 추가 화면에서 대분류 -> 중분류 -> 소분류를 선택할 때 사용
-	@Transactional(readOnly=true)
-	public List<CategoryDto.Read> readCategory(Integer ctgno) {
-		List<Object[]> list = ctgno==null? dao.readAllMajorCategory() : dao.readAllChildCategory(Category.builder().ctgno(ctgno).build());
-		
-		// 47라인에서 읽어온 카테고리 코드와 카테고리 이름들을 CategoryDto.Read의 리스트로 만들어 리턴
-		return list.stream().map(ar->new CategoryDto.Read((Integer)ar[0], (String)ar[1])).collect(Collectors.toList());
 	}
 	
 	// update할 때 @Transactional이 없으면 TransactionRequiredException
@@ -67,25 +51,6 @@ public class CategoryService {
 		
 		List<Category> categories = new ArrayList<>();
 		
-		// 대분류를 읽어온다
-		List<Object[]> list = dao.readAllMajorCategory();
-		list.forEach(ar-> categories.add(Category.builder().ctgno((Integer)ar[0]).ctgName((String)ar[1]).build()));
-		
-		for(int i=0; i<categories.size(); i++) {
-			// 각 대분류의 자식 중분류들을 읽어와 대분류에 추가한다
-			List<Category> subCategories = new ArrayList<>();
-			list = dao.readAllChildCategory(Category.builder().ctgno(categories.get(i).getCtgno()).build());
-			list.forEach(ar-> subCategories.add(Category.builder().ctgno((Integer)ar[0]).ctgName((String)ar[1]).build()));
-			categories.get(i).setCategories(subCategories);
-			
-			for(int j=0; j<categories.get(i).getCategories().size(); j++) {
-				// 각 중분류의 자식 소분류들을 읽어와 중분류에 추가한다
-				List<Category> desendescendantCategories = new ArrayList<>();
-				list = dao.readAllChildCategory(Category.builder().ctgno(subCategories.get(j).getCtgno()).build());
-				list.forEach(ar-> desendescendantCategories.add(Category.builder().ctgno((Integer)ar[0]).ctgName((String)ar[1]).build()));
-				categories.get(i).getCategories().get(j).setCategories(desendescendantCategories);
-			}
-		}
 		return categories;
 	}
 }

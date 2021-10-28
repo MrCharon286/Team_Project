@@ -9,7 +9,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 
 import com.example.plantforu.controller.dto.*;
-import com.example.plantforu.controller.dto.ProductDto.*;
 import com.example.plantforu.entity.product.*;
 import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
@@ -40,15 +39,10 @@ public class ProductDslRepository {
 		//		동적 표현식 생성을 위한 접근 경로는 Expression 객체
 		//		Expressions는 접근 경로 생성을 도와주는 정적 팩토리 클래스
 		//			파라미터로는 클래스와 그 클래스에서 사용할 필드명 
-		return factory.from(product).select(Projections.constructor(ProductDto.ProductList.class, product.pno, product.pname, product.pprice, product.pavgOfRating, product.pcountOfRating))
+		return factory.from(product).select(Projections.constructor(ProductDto.ProductList.class, product.pno, product.pname, product.pimage, product.pprice))
 			.where(withCategory(ctgno))
 			.orderBy(new OrderSpecifier(isAsc==true? Order.ASC : Order.DESC, Expressions.path(Product.class, fieldName)))
 			.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
-	}
-	
-	public List<DisApproved> disApprovedList() {
-		return factory.select(Projections.constructor(ProductDto.DisApproved.class, product.pno, product.pname, product.createTime))
-			.from(product).where(product.papproval.eq(false)).orderBy(product.createTime.desc()).fetch();
 	}
 	
 	// 복합 조건 : 복합 boolean 표현식은 BooleanExpression으로 작성한다. 보통 where절을 동적으로 생성할 때 사용

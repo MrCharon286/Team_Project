@@ -11,7 +11,6 @@ public class CategoryDto {
 	public static class Add {
 		private Integer ctgno;
 		private String ctgName;
-		private Integer superCtgno;
 		public Category toEntity() {
 			return Category.builder().ctgno(ctgno).ctgName(ctgName).build();
 		}
