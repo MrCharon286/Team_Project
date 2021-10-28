@@ -47,6 +47,8 @@ public class Product extends BaseCreateTimeEntity {
 	
 	private Boolean papproval;
 	
+	private String pimage;
+	
 	@OneToMany(mappedBy="product", cascade= {CascadeType.REMOVE})
 	private Set<Review> reviews;
 	

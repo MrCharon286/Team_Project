@@ -18,7 +18,6 @@ import lombok.*;
 @RequiredArgsConstructor
 @Service
 public class OrderService {
-	private final AddressRepository addressDao;
 	private final ProductRepository productDao;
 	private final OrderRepository orderDao;
 	private final OrderDslRepository orderDslDao;

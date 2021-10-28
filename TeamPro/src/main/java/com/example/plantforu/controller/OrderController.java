@@ -78,7 +78,7 @@ public class OrderController {
 	@Secured("ROLE_USER")
 	@GetMapping(path="/orders/review_available", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<OrderDto.isReviewAvailable>> isReviewedList(Principal principal) { 
-		return ResponseEntity.ok(service.isReviewAvailableList(principal.getName()));
+		return ResponseEntity.ok(service.reviewAvailableList(principal.getName()));
 	}
 	
 	@GetMapping(path="/orders/order_itemno", produces=MediaType.APPLICATION_JSON_VALUE)

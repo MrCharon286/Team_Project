@@ -27,12 +27,7 @@ public class Order extends BaseCreateTimeEntity  {
 	
 	private Integer pprice;
 	
-	@ManyToOne
-	@JoinColumns({@JoinColumn(name="orderer", referencedColumnName="useremail"), @JoinColumn(name="ano", referencedColumnName="ano")})
-	private Address address;
-
-	@Enumerated(EnumType.ORDINAL)
-	private DeliveryStatus deliveryStatus;
+	
 	
 	@OneToMany(mappedBy="order", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private List<OrderItem> orderItems;

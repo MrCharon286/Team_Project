@@ -34,7 +34,7 @@ public class OrderDslRepository {
 	
 	public List<isReviewAvailable> reviewAvailableList(String loginId) {
 		return factory.select(Projections.constructor(OrderDto.isReviewAvailable.class, order.ono, order.createTime, orderItem.pimage, orderItem.pname, orderItem.orderItemNo))
-			.from(order).innerJoin(order.orderItems, orderItem).where(order.address().username.eq(loginId).and(orderItem.isReviewed.eq(true))).orderBy(order.createTime.desc()).fetch();
+			.from(order).innerJoin(order.orderItems, orderItem).where(order.username.eq(loginId).and(orderItem.isReviewAvailable.eq(true))).orderBy(order.createTime.desc()).fetch();
 	}
 
 	public OrderDto.ReviewInfo getOrderItem(Integer orderNo, Integer orderItemNo) {
@@ -43,6 +43,6 @@ public class OrderDslRepository {
 		if(tuple==null)
 			return null;
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
-		return new OrderDto.ReviewInfo(dtf.format(tuple.get(order.createTime)), tuple.get(orderItem.pname), tuple.get(order.pno), tuple.get(order.ono), tuple.get(orderItem.orderItemNo));
+		return new OrderDto.ReviewInfo(dtf.format(tuple.get(order.createTime)), tuple.get(orderItem.pname), tuple.get(order.ono), tuple.get(order.ono), tuple.get(orderItem.orderItemNo));
 	}
 }
