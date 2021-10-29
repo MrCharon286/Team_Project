@@ -37,19 +37,6 @@ public class Product extends BaseCreateTimeEntity {
 	
 	private Integer pprice;
 	
-<<<<<<< HEAD
-	private Boolean papproval;
-	
-	private String pimage;
-	
-	@OneToMany(mappedBy="product", cascade= {CascadeType.REMOVE})
-	private Set<Review> reviews;
-	
-	@OneToMany(mappedBy="product", cascade= {CascadeType.REMOVE})
-	private Set<Qna> qnas;
-	
-=======
->>>>>>> a7abce299e559838aac2f38524f9b2d40b0607e5
 	@JoinColumn(name="ctgno")
 	private Integer ctgno;
 	
