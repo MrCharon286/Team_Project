@@ -1,4 +1,4 @@
- package com.example.plantforu.entity.order;
+ package com.example.plantforu.entity.cart;
 
 import javax.persistence.*;
 

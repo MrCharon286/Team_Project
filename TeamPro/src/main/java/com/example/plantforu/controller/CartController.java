@@ -7,7 +7,7 @@ import org.springframework.security.access.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.plantforu.entity.order.*;
+import com.example.plantforu.entity.cart.*;
 import com.example.plantforu.service.*;
 
 import lombok.*;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.*;
 
 import com.example.plantforu.controller.dto.OrderDto;
-import com.example.plantforu.entity.order.*;
+import com.example.plantforu.entity.cart.*;
 import com.example.plantforu.service.*;
 
 import lombok.*;

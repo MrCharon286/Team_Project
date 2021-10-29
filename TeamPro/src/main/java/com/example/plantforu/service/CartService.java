@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 
 import org.springframework.stereotype.*;
 
-import com.example.plantforu.entity.order.*;
+import com.example.plantforu.entity.cart.*;
 import com.example.plantforu.repository.*;
 import com.example.plantforu.util.*;
 

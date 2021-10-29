@@ -10,7 +10,9 @@ import org.springframework.stereotype.*;
 
 import com.example.plantforu.controller.dto.*;
 import com.example.plantforu.controller.dto.OrderDto.*;
-import com.example.plantforu.entity.order.*;
+import com.example.plantforu.entity.cart.*;
+import com.example.plantforu.entity.order.QOrder;
+import com.example.plantforu.entity.order.QOrderItem;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.*;
 import com.querydsl.jpa.impl.*;

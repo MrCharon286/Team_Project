@@ -8,7 +8,7 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 import com.example.plantforu.controller.dto.*;
-import com.example.plantforu.entity.order.*;
+import com.example.plantforu.entity.cart.*;
 import com.example.plantforu.entity.product.*;
 import com.example.plantforu.repository.*;
 import com.example.plantforu.util.*;
