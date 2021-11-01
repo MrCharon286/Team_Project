@@ -25,9 +25,8 @@ public class ProductService {
 	@Transactional(readOnly=true)
 	public ProductDto.Page list(ProductDto.ForList dto) {
 		Pageable pageable = PageRequest.of(dto.getPageno()-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
-		List<ProductDto.ProductList> products = dslDao.list(pageable, dto.getCtgno(), dto.getFieldName(), dto.getIsAsc());
-		products.forEach(product->product.changeImageName());
-		return new ProductDto.Page(products, dto.getPageno(), dslDao.countByPno(dto.getCtgno()), dto.getCtgno());
+		List<ProductDto.ProductList> products = dslDao.list(pageable, dto.getCategory(), dto.getFieldName(), dto.getIsAsc());
+		return new ProductDto.Page(products, dto.getPageno(), dslDao.countByPno(dto.getCategory()), dto.getCategory());
 	}
 
 	public Product read(Integer pno) {

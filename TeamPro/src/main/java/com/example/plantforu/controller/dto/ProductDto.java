@@ -17,10 +17,10 @@ public class ProductDto {
 	@Data
 	public static class ForList {
 		private Integer pageno;
-		private Integer ctgno;
+		private Category category;
 		private String fieldName;
 		private Boolean isAsc;
-		public ForList(Integer pageno, String categoryCode, String fieldName, Boolean isAsc) {
+		public ForList(Integer pageno, Category category, String fieldName, Boolean isAsc) {
 			if(pageno==null)
 				this.pageno = 1;
 			if(fieldName==null)
@@ -36,11 +36,7 @@ public class ProductDto {
 	public static class ProductList {
 		private Integer pno;
 		private String pname;
-		private String pimage;
 		private Integer pprice;
-		public void changeImageName() {
-			this.pimage = PlantforuConstant.PRODUCT_URL + this.pimage;
-		}
 	}
 	
 	@Data
@@ -49,7 +45,7 @@ public class ProductDto {
 		private List<ProductList> products;
 		private Integer pageno;
 		private Long totalcount;
-		private Integer ctgno;
+		private Category category;
 	}
 
 	// 상품 추가를 요청하는 DTO
@@ -58,12 +54,12 @@ public class ProductDto {
 	public static class Create {
 		private Integer pno;
 		private String pname;
-		private MultipartFile sajin;
-		private String pdetail;
+		private MultipartFile pimage;
+		private MultipartFile pdetail;
 		private Integer pprice;
-		private Integer ctgno;
+		private Category category;
 		public Product toEntity() {
-			return Product.builder().pname(pname).pprice(pprice).ctgno(ctgno).build();
+			return Product.builder().pname(pname).pprice(pprice).category(category).build();
 		}
 	}
 	

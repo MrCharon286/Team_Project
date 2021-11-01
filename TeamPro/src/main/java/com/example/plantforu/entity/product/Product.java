@@ -5,14 +5,12 @@ import javax.persistence.Entity;
 
 import org.hibernate.annotations.*;
 
-import com.example.plantforu.entity.*;
-
 import lombok.*;
 import lombok.experimental.*;
 
 @Getter
 @Setter
-@ToString(exclude="ctgno")
+@ToString
 @EqualsAndHashCode(callSuper=false)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +18,7 @@ import lombok.experimental.*;
 @Accessors(chain=true)
 @Entity
 @DynamicUpdate
-public class Product extends BaseCreateTimeEntity {
+public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="product_seq")
 	@SequenceGenerator(name="product_seq", sequenceName="product_seq", allocationSize=1)
@@ -29,19 +27,15 @@ public class Product extends BaseCreateTimeEntity {
 	@Lob
 	private String pdetail;
 	
+	@Lob
+	private String pimage;	
+	
 	@Column(length=20)
 	private String pname;
 	
-	@Column(length=100)
-	private String pimage;
-	
 	private Integer pprice;
 	
-	@JoinColumn(name="ctgno")
-	private Integer ctgno;
-	
-	@PrePersist
-	public void init() {
-		this.pprice = 0;
-	}
+	@Enumerated(EnumType.STRING)
+	@Column(name="category")
+	private Category category;
 }

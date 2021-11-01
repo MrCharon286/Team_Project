@@ -2,6 +2,8 @@ package com.example.plantforu;
 
 import static org.junit.Assert.*;
 
+import javax.transaction.*;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
@@ -20,10 +22,22 @@ public class ProductTest {
 		assertNotNull(dao);
 	}
 	
-	@Test
-	public void test1() {
-		for(int i=6; i<=7; i++) {
-			dao.save(Product.builder().ctgno(1).pno(i).pdetail("aaa").pimage("bbb").pprice(2000).pname("ccc").build());
+	// @Test
+	public void insertTest() {
+		for(int i=16; i<=30; i++) {
+			dao.save(Product.builder().pno(i).pdetail("aaa"+i).pimage("bbb"+i).pprice(2000).pname(i+"번 상품").category(Category.음료).build());
 		}
+	}
+	
+	// @Test
+	public void selectTest() {
+		//System.out.println(dao.findById(1));
+		System.out.println(dao.findAll());
+	}
+	
+	//@Transactional
+	//@Test
+	public void deleteTest() {
+		dao.deleteById(10);
 	}
 }
