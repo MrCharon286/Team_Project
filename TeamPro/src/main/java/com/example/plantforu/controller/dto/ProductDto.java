@@ -34,6 +34,7 @@ public class ProductDto {
 	@Data
 	@AllArgsConstructor
 	public static class ProductList {
+		private Category category;
 		private Integer pno;
 		private String pname;
 		private Integer pprice;

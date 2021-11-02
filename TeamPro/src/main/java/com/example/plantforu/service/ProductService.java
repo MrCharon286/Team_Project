@@ -1,12 +1,13 @@
 package com.example.plantforu.service;
 
+import java.io.*;
 import java.util.*;
 
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.*;
 
 import com.example.plantforu.controller.dto.*;
 import com.example.plantforu.entity.product.*;
@@ -29,9 +30,34 @@ public class ProductService {
 		return new ProductDto.Page(products, dto.getPageno(), dslDao.countByPno(dto.getCategory()), dto.getCategory());
 	}
 
+	public CKResponse ckImageUpload(MultipartFile upload) {
+		if(upload!=null && upload.isEmpty()==false && upload.getContentType().toLowerCase().startsWith("image/")) {
+			String imageName = UUID.randomUUID().toString() + PlantforuUtil.getMultipartExtension(upload);
+			File file = new File(PlantforuConstant.TEMP_FOLDER, imageName);
+			try {
+				upload.transferTo(file);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			return new CKResponse(1, imageName, PlantforuConstant.PRODUCT_URL + imageName);
+		}
+		return null;
+	}	
+	
+	public Product add(ProductDto.Create dto) {
+		Product product = dto.toEntity();
+		
+		// 연습용 예제이므로 상품 이미지는 모두 default.jpg로 
+		product.setPimage("imageDefault.jpg");
+		product.setPdetail("detailDefault.jpg");
+		System.out.println(product);
+		return dao.save(product);
+	}
+	
 	public Product read(Integer pno) {
 		Product product = dao.findById(pno).orElseThrow(PlantforuException.ProductNotFoundException::new);
 		product.setPimage(PlantforuConstant.PRODUCT_URL + product.getPimage());
+		product.setPdetail(PlantforuConstant.PRODUCT_URL + product.getPdetail());
 		return product;
 	}
 }

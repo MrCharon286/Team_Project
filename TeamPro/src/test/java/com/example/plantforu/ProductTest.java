@@ -2,6 +2,8 @@ package com.example.plantforu;
 
 import static org.junit.Assert.*;
 
+import java.util.*;
+
 import javax.transaction.*;
 
 import org.junit.jupiter.api.*;
@@ -22,9 +24,9 @@ public class ProductTest {
 		assertNotNull(dao);
 	}
 	
-	// @Test
+	@Test
 	public void insertTest() {
-		for(int i=16; i<=30; i++) {
+		for(int i=38; i<=50; i++) {
 			dao.save(Product.builder().pno(i).pdetail("aaa"+i).pimage("bbb"+i).pprice(2000).pname(i+"번 상품").category(Category.음료).build());
 		}
 	}
@@ -36,8 +38,8 @@ public class ProductTest {
 	}
 	
 	//@Transactional
-	//@Test
+	@Test
 	public void deleteTest() {
-		dao.deleteById(10);
+		dao.deleteById(48);
 	}
 }

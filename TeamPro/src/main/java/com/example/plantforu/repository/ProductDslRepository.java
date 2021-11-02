@@ -39,7 +39,7 @@ public class ProductDslRepository {
 		//		동적 표현식 생성을 위한 접근 경로는 Expression 객체
 		//		Expressions는 접근 경로 생성을 도와주는 정적 팩토리 클래스
 		//			파라미터로는 클래스와 그 클래스에서 사용할 필드명 
-		return factory.from(product).select(Projections.constructor(ProductDto.ProductList.class, product.pno, product.pname, product.pprice))
+		return factory.from(product).select(Projections.constructor(ProductDto.ProductList.class, product.category, product.pno, product.pname, product.pprice))
 			.orderBy(new OrderSpecifier(isAsc==true? Order.ASC : Order.DESC, Expressions.path(Product.class, fieldName)))
 			.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 	}

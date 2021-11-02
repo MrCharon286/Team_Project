@@ -36,6 +36,6 @@ public class Product {
 	private Integer pprice;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="category")
+	@Column
 	private Category category;
 }
