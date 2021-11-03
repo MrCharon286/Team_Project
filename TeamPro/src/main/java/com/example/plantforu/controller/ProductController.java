@@ -2,6 +2,7 @@ package com.example.plantforu.controller;
 
 import java.io.*;
 import java.nio.file.*;
+import java.security.*;
 
 import javax.validation.*;
 
@@ -105,16 +106,30 @@ public class ProductController {
 		return ResponseEntity.ok(service.add(dto));
 	}
 	
+	// 상품 목록
+	@GetMapping(path="/products/list", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductDto.Page> productList(@Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
+		PlantforuUtil.bindingResultCheck(bindingResult);
+		return ResponseEntity.ok(service.list(dto));
+	}	
+	
 	// 상품 정보
 	@GetMapping(path="/product/read/{pno}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> productDetail(@PathVariable Integer pno) {
 		return ResponseEntity.ok(service.read(pno));
 	}
 	
-	// 상품 목록
-	@GetMapping(path="/products/list", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductDto.Page> productListRecent(@Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
-		PlantforuUtil.bindingResultCheck(bindingResult);
-		return ResponseEntity.ok(service.list(dto));
+	// 상품 정보 수정
+	@PutMapping(path="/product/read/{pno}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Product> productUpdate(@Valid ProductDto.Update dto, BindingResult bindingResult) throws BindException {
+		if(bindingResult.hasErrors())
+			throw new BindException(bindingResult);
+		return ResponseEntity.ok(service.update(dto));
+	}
+	
+	// 상품 삭제
+	@DeleteMapping(path="/product/read/{pno}")
+	public ResponseEntity<Product> productDelete(@PathVariable Integer pno) throws BindException {
+		return ResponseEntity.ok(service.delete(pno));
 	}
 }

@@ -64,6 +64,16 @@ public class ProductDto {
 		}
 	}
 	
+	// 상품 정보를 수정하는 DTO
+	@Data
+	@AllArgsConstructor
+	public static class Update {
+		private Integer pno;
+		private String pname;
+		private Integer pprice;
+		private Category category;
+	}
+	
 	// JsonView 어노테이션을 이용해 DTO를 구성하기 위한 클래스
 	@Data
 	@AllArgsConstructor

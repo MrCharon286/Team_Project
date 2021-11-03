@@ -3,6 +3,8 @@ package com.example.plantforu.service;
 import java.io.*;
 import java.util.*;
 
+import javax.validation.*;
+
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.*;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.*;
 import com.example.plantforu.controller.dto.*;
 import com.example.plantforu.entity.product.*;
 import com.example.plantforu.repository.*;
+import com.example.plantforu.service.PlantforuException.*;
 import com.example.plantforu.util.*;
 
 import lombok.*;
@@ -59,5 +62,18 @@ public class ProductService {
 		product.setPimage(PlantforuConstant.PRODUCT_URL + product.getPimage());
 		product.setPdetail(PlantforuConstant.PRODUCT_URL + product.getPdetail());
 		return product;
+	}
+
+	public Product update(ProductDto.Update dto) {
+		Product product = dao.findById(dto.getPno()).orElseThrow(PlantforuException.ProductNotFoundException::new);
+		
+		product.setPname(dto.getPname()).setPprice(dto.getPprice()).setCategory(dto.getCategory());
+		return dao.save(product);
+	}
+	
+	public Product delete(Integer pno) {
+		Product product = dao.findById(pno).orElseThrow(PlantforuException.ProductNotFoundException::new);
+		dao.delete(product);
+		return null;
 	}
 }
