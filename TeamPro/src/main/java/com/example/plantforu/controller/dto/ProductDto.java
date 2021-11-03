@@ -55,8 +55,8 @@ public class ProductDto {
 	public static class Create {
 		private Integer pno;
 		private String pname;
-		private MultipartFile pimage;
-		private MultipartFile pdetail;
+		private MultipartFile pimagefile;
+		private MultipartFile pdetailfile;
 		private Integer pprice;
 		private Category category;
 		public Product toEntity() {
@@ -72,6 +72,8 @@ public class ProductDto {
 		private String pname;
 		private Integer pprice;
 		private Category category;
+		private MultipartFile pimagefile;
+		private MultipartFile pdetailfile;
 	}
 	
 	// JsonView 어노테이션을 이용해 DTO를 구성하기 위한 클래스

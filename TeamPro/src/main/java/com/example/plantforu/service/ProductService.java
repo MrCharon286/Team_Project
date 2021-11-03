@@ -35,7 +35,7 @@ public class ProductService {
 
 	public CKResponse ckImageUpload(MultipartFile upload) {
 		if(upload!=null && upload.isEmpty()==false && upload.getContentType().toLowerCase().startsWith("image/")) {
-			String imageName = UUID.randomUUID().toString() + PlantforuUtil.getMultipartExtension(upload);
+			String imageName = UUID.randomUUID().toString() + PlantforuUtil.getImageMultipartExtension(upload);
 			File file = new File(PlantforuConstant.TEMP_FOLDER, imageName);
 			try {
 				upload.transferTo(file);
@@ -49,10 +49,13 @@ public class ProductService {
 	
 	public Product add(ProductDto.Create dto) {
 		Product product = dto.toEntity();
+		MultipartFile pimagefile = dto.getPimagefile();
+		MultipartFile pdetailfile = dto.getPdetailfile();
 		
-		// 연습용 예제이므로 상품 이미지는 모두 default.jpg로 
-		product.setPimage("imageDefault.jpg");
-		product.setPdetail("detailDefault.jpg");
+		String pimage = PlantforuUtil.savePimage(pimagefile, product.getPname());
+		String pdetail = PlantforuUtil.savePdetail(pdetailfile, product.getPname());
+		
+		product.addProductInfo(pimage, pdetail);
 		System.out.println(product);
 		return dao.save(product);
 	}
@@ -66,8 +69,26 @@ public class ProductService {
 
 	public Product update(ProductDto.Update dto) {
 		Product product = dao.findById(dto.getPno()).orElseThrow(PlantforuException.ProductNotFoundException::new);
+		if(dto.getPname()!=null)
+			product.setPname(dto.getPname());
 		
-		product.setPname(dto.getPname()).setPprice(dto.getPprice()).setCategory(dto.getCategory());
+		if(dto.getPprice()!=null)
+			product.setPprice(dto.getPprice());
+		
+		if(dto.getCategory()!=null)
+			product.setCategory(dto.getCategory());
+		
+		MultipartFile pimagefile = dto.getPimagefile();
+		if(pimagefile!=null && pimagefile.isEmpty()==false) {
+			String pimage = PlantforuUtil.savePimage(pimagefile, product.getPname());
+			product.setPimage(pimage);
+		}
+		
+		MultipartFile pdetailfile = dto.getPdetailfile();
+		if(pdetailfile!=null && pdetailfile.isEmpty()==false) {
+			String pdetail = PlantforuUtil.savePdetail(pdetailfile, product.getPname());
+			product.setPimage(pdetail);
+		}
 		return dao.save(product);
 	}
 	

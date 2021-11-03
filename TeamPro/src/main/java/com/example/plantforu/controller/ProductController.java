@@ -100,6 +100,7 @@ public class ProductController {
 		return ResponseEntity.ok(service.ckImageUpload(upload));
 	}
 	
+	// 상품 추가
 	@PostMapping(path="/product/add", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> productInsert(@Valid ProductDto.Create dto, BindingResult bindingResult) throws BindException {
 		PlantforuUtil.bindingResultCheck(bindingResult);
@@ -107,7 +108,7 @@ public class ProductController {
 	}
 	
 	// 상품 목록
-	@GetMapping(path="/products/list", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="/product/list", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProductDto.Page> productList(@Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
 		PlantforuUtil.bindingResultCheck(bindingResult);
 		return ResponseEntity.ok(service.list(dto));

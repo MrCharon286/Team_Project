@@ -38,4 +38,9 @@ public class Product {
 	@Enumerated(EnumType.STRING)
 	@Column
 	private Category category;
+	
+	public void addProductInfo(String pimage, String pdetail) {
+		this.pimage = pimage;
+		this.pdetail = pdetail;
+	}
 }
