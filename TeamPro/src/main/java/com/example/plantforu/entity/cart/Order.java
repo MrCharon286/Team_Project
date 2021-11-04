@@ -17,7 +17,7 @@ import lombok.experimental.*;
 @Accessors(chain=true)
 @Builder
 @Entity
-@Table(name="orders", indexes=@Index(name="order_idx_orderer", columnList="orderer"))
+@Table(name="orders")
 public class Order extends BaseCreateTimeEntity  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="order_seq")
@@ -26,10 +26,11 @@ public class Order extends BaseCreateTimeEntity  {
 	
 	private Integer oprice;
 	
+	/*
 	@ManyToOne
 	@JoinColumns({@JoinColumn(name="orderer", referencedColumnName="username"), @JoinColumn(name="ano", referencedColumnName="ano")})
 	private Address address;
-
+	*/
 	
 	
 	@OneToMany(mappedBy="order", cascade={CascadeType.PERSIST, CascadeType.REMOVE})

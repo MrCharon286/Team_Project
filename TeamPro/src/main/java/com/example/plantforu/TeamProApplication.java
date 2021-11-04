@@ -9,12 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
-<<<<<<< HEAD
 @EnableJpaAuditing
-@SpringBootApplication
-=======
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
->>>>>>> 박순규-edit
 public class TeamProApplication {
 
 	public static void main(String[] args) {

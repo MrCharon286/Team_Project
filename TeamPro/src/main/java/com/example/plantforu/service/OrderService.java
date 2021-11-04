@@ -58,12 +58,12 @@ public class OrderService {
 		}
 		return (List<OrderItem>)session.getAttribute("cart");
 	}
-	
+	/*
 	@Transactional(readOnly=true)
 	public List<Order> readAll(String loginId) {
 		return orderDao.readAll(loginId);
 	}
-	
+	*/
 	
 }
 
