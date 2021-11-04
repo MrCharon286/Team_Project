@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Account implements UserDetails {
-	private String useremail;
+	private String username;
 	private String password;
 	private boolean isEnabled;
 	@Getter
@@ -25,7 +25,7 @@ public class Account implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return useremail;
+		return username;
 	}
 
 	@Override

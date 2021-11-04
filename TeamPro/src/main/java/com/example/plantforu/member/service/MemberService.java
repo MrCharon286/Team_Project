@@ -1,16 +1,10 @@
 package com.example.plantforu.member.service;
 
-import java.time.*;
-import java.time.temporal.*;
-import java.util.*;
 
 import org.apache.commons.lang3.*;
-import org.springframework.http.*;
-import org.springframework.scheduling.annotation.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
-import org.springframework.web.multipart.*;
 
 import com.example.plantforu.entity.member.Member;
 import com.example.plantforu.entity.member.MemberFail;
@@ -29,12 +23,12 @@ public class MemberService {
 	private final MailUtil mailUtil;
 	private final PasswordEncoder passwordEncoder;
 	
-	public void emailAvailabelCheck(String useremail) {
+	public void useremailAvailabelCheck(String useremail) {
 		if(dao.existsByUseremail(useremail)==true)
 			throw new MemberFail.UseremailExistException();
 	}
-	@Transactional(readOnly=true)
-	public void telAvailabelCheck(String usertel) {
+	
+	public void telAvailabelCheck(Integer usertel) {
 		if(dao.existsByUsertel(usertel)==true)
 			throw new MemberFail.UsertelExistException();
 	}
@@ -45,8 +39,8 @@ public class MemberService {
 	}
 
 	@Transactional(readOnly=true)
-	public String findEmail(String usertel) {
-		return dao.findEmailbByUsertel(usertel).orElseThrow(MemberFail.MemberNotFoundException::new);
+	public String findUseremail(String useremail) {
+		return dao.findUseremailByUsertel(useremail).orElseThrow(MemberFail.MemberNotFoundException::new);
 	}
 
 	@Transactional
@@ -77,7 +71,7 @@ public class MemberService {
 			throw new MemberFail.PasswordCheckException();
 	}
 
-	// Member 처리 : 프사에 주소를 추가, transient 필드인 days에 값을 추가해서 내보내자
+	// Member 처리 : 프사에 주소를 추가, transient 필드인 days에 값을 추가해서 내보내자 =>>수정필요
 	public Member read(String loginEmail) {
 		Member member = dao.findById(loginEmail).orElseThrow(MemberFail.MemberNotFoundException::new);	
 		return member;
@@ -88,8 +82,8 @@ public class MemberService {
 	public void update(MemberDto.Update dto, String loginId) {
 		Member member = dao.findById(loginId).orElseThrow(MemberFail.MemberNotFoundException::new);
 		
-		if(dto.getEmail()!=null)
-			member.setUseremail(dto.getEmail());
+		if(dto.getUseremail()!=null)
+			member.setUseremail(dto.getUseremail());
 		
 		if(dto.getPassword()!=null && dto.getNewPassword()!=null) {
 			if(passwordEncoder.matches(dto.getPassword(), member.getPassword())==false)
@@ -102,4 +96,5 @@ public class MemberService {
 	public void resign(String loginId) {
 		dao.deleteById(loginId);
 	}
+
 }

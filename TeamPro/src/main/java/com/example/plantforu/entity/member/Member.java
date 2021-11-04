@@ -19,14 +19,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -38,11 +38,10 @@ public class Member {
 	public void init() {
 		loginFailCnt = 0;
 		enabled = false;
-		userpoint = 0;
 	}
 
 	@Id
-	@Column(length = 30)
+	@Column(length = 30, name="user_email")
 	private String useremail;
 
 	@Column(length = 20)
@@ -50,13 +49,11 @@ public class Member {
 	private String password;
 
 	@Column(length = 5)
-	private String username;
+	private String userirum;
 
 	@Column(length = 13)
-	private String usertel;
+	private Integer usertel;
 
-	
-	private Integer userpoint; 
 
 	@Column(length = 20)
 	@JsonIgnore
@@ -69,11 +66,16 @@ public class Member {
 		} 
 		return auth;
 	}
+	
 	@JsonIgnore
 	private Integer loginFailCnt;
 	
 	@JsonIgnore
 	private Boolean enabled;
+	
+	@JsonIgnore
+	@Column(length=20)
+	private String checkcode;
 
 	public void loginSuccess() {
 		this.loginFailCnt = 0;

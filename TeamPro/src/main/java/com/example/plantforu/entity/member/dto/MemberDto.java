@@ -1,11 +1,10 @@
 package com.example.plantforu.entity.member.dto;
 
 import javax.validation.constraints.*;
-import org.springframework.format.annotation.*;
 import com.example.plantforu.entity.member.Member;
 import com.example.plantforu.util.validation.annotation.Password;
 import com.example.plantforu.util.validation.annotation.Useremail;
-import com.example.plantforu.util.validation.annotation.Username;
+import com.example.plantforu.util.validation.annotation.Userirum;
 import com.example.plantforu.util.validation.annotation.Usertel;
 
 import lombok.*;
@@ -20,8 +19,8 @@ public class MemberDto {
 		private String useremail;
 		
 		@NotNull
-		@Username
-		private String username;
+		@Userirum
+		private String userirum;
 		
 		@NotNull
 		@Password
@@ -29,18 +28,18 @@ public class MemberDto {
 		
 		@NotNull
 		@Usertel
-		private String usertel;
+		private Integer usertel;
 
 		public Member toEntity() {
-			return Member.builder().useremail(useremail).username(username).password(password).usertel(usertel).build();
+			return Member.builder().useremail(useremail).userirum(userirum).password(password).usertel(usertel).build();
 		}
 	}
 
 	@Data
 	public class Update {
 		@NotNull
-		@Email
-		private String email;
+		@Userirum
+		private String useremail;
 		
 		@Password
 		private String password;
@@ -58,12 +57,12 @@ public class MemberDto {
 	@Data
 	public class ResetPwd {
 		@NotNull
-		@Username
+		@Userirum
 		private String useremail;
 		
 		@NotNull
-		@Email
-		private String usertel;
+		@Useremail
+		private Integer useretel;
 	}
 	
 	@Data

@@ -35,17 +35,17 @@ public class MemberRestController {
 	private final MemberService service;
 	
 	// 이메일 사용 여부
-	@GetMapping(path="/member/email/check", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<?> emailAvailableCheck(@Useremail String email) {
-		service.emailAvailabelCheck(email);
+	@GetMapping(path="/member/useremail/check", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<?> useremailAvailableCheck(@Useremail String useremail) {
+		service.useremailAvailabelCheck(useremail);
 		return ResponseEntity.ok(PlantforuResponseConstant.EMAIL_AVAILABLE_MSG);
 	}
 	
 	// 전화번호 사용 여부
-		@GetMapping(path="/members/usertel/check", produces = MediaType.TEXT_PLAIN_VALUE)
-		public ResponseEntity<?> idAvailableCheck(@Usertel String usertel) {
-			service.emailAvailabelCheck(usertel);
-			return ResponseEntity.ok(PlantforuResponseConstant.TEL_AVAILABLE_MSG);
+	@GetMapping(path="/member/usertel/check", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<?> telAvailableCheck(@Usertel Integer usertel) {
+		service.telAvailabelCheck(usertel);
+		return ResponseEntity.ok(PlantforuResponseConstant.TEL_AVAILABLE_MSG);
 		}
 		
 	// 회원 가입
@@ -72,8 +72,8 @@ public class MemberRestController {
 	*/
 	
 	// 아이디 찾기
-	@GetMapping(path="/member/findid", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<?> findEmailRead(@Email String email) {
+	@GetMapping(path="/member/find/useremail", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<?> findEmailRead(@Useremail String useremail) {
 		URI uri = UriComponentsBuilder.newInstance().path("/member/login").build().toUri();
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setLocation(uri);
@@ -97,13 +97,6 @@ public class MemberRestController {
 			throw new BindException(bindingResult);
 		service.changePassword(dto, principal.getName());
 		return ResponseEntity.ok(PlantforuResponseConstant.CHANGE_PASSWORD_MSG);
-	}
-	
-	//마이페이지
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping(path="/member/view/myinfo", produces = MediaType.APPLICATION_JSON_VALUE) 
-	public ResponseEntity<?> memberMyPageRead(Principal principal, HttpSession session) {
-		return ResponseEntity.ok(service.read(principal.getName()));
 	}
 	
 	//내정보보기 눌렸을때 비밀번호 확인창
@@ -134,7 +127,7 @@ public class MemberRestController {
 	
 	// 회원 탈퇴 후 루트 페이지로 이동(회원 탈퇴 버튼이 내정보에 있다. 따라서 루트로 강제이동 시키자)
 	@PreAuthorize("isAuthenticated()")
-	@DeleteMapping("member/change/info")
+	@DeleteMapping("member/change/deleteinfo")
 	public ResponseEntity<?> memberDrop(SecurityContextLogoutHandler handler, HttpServletRequest req, HttpServletResponse res, Authentication authentication )  {
 		service.resign(authentication.getName());
 		handler.logout(req, res, authentication);

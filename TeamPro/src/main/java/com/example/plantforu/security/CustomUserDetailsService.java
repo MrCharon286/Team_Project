@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Member member = dao.findById(useremail).orElseThrow(()->new InternalAuthenticationServiceException("USER NOT FOUND"));
 		
 		// 2-1. useremail, password, enabled로 UserDetails 객체를 생성
-		Account account = Account.builder().useremail(member.getUseremail()).password(member.getPassword()).isEnabled(member.getEnabled()).build();
+		Account account = Account.builder().username(member.getUseremail()).password(member.getPassword()).isEnabled(member.getEnabled()).build();
 		
 		return account;
 	}
