@@ -109,9 +109,16 @@ public class ProductController {
 	
 	// 상품 목록
 	@GetMapping(path="/product/list", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductDto.Page> productList(@Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<ProductDto.Page> productList(@RequestParam(defaultValue="1") Integer pageno, @Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
 		PlantforuUtil.bindingResultCheck(bindingResult);
-		return ResponseEntity.ok(service.list(dto));
+		return ResponseEntity.ok(service.list(pageno, dto));
+	}	
+
+	// 카테고리별 상품 목록
+	@GetMapping(path="/product/list/{category}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductDto.Page> productList(@RequestParam(defaultValue="1") Integer pageno, @Valid ProductDto.ForList dto, @PathVariable Category category, BindingResult bindingResult) throws BindException {
+		PlantforuUtil.bindingResultCheck(bindingResult);
+		return ResponseEntity.ok(service.listPerCategory(pageno, dto, category));
 	}	
 	
 	// 상품 정보

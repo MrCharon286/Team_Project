@@ -17,10 +17,9 @@ public class ProductDto {
 	@Data
 	public static class ForList {
 		private Integer pageno;
-		private Category category;
 		private String fieldName;
 		private Boolean isAsc;
-		public ForList(Integer pageno, Category category, String fieldName, Boolean isAsc) {
+		public ForList(Integer pageno, String fieldName, Boolean isAsc) {
 			if(pageno==null)
 				this.pageno = 1;
 			if(fieldName==null)
@@ -34,7 +33,6 @@ public class ProductDto {
 	@Data
 	@AllArgsConstructor
 	public static class ProductList {
-		private Category category;
 		private Integer pno;
 		private String pname;
 		private Integer pprice;
@@ -46,7 +44,6 @@ public class ProductDto {
 		private List<ProductList> products;
 		private Integer pageno;
 		private Long totalcount;
-		private Category category;
 	}
 
 	// 상품 추가를 요청하는 DTO

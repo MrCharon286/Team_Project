@@ -25,12 +25,21 @@ public class ProductService {
 	private final ProductRepository dao;
 	private final ProductDslRepository dslDao;
 	
+	// 상품 전체 리스트
 	// readOnly를 지정하면 읽기 전용이므로 EntityManager가 변경을 대비한 스냅샷을 저장하지 않아 메모리 사용량을 최적화 -> 수동으로 flush하지 않으면 업데이트되지 않는다
 	@Transactional(readOnly=true)
-	public ProductDto.Page list(ProductDto.ForList dto) {
-		Pageable pageable = PageRequest.of(dto.getPageno()-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
-		List<ProductDto.ProductList> products = dslDao.list(pageable, dto.getCategory(), dto.getFieldName(), dto.getIsAsc());
-		return new ProductDto.Page(products, dto.getPageno(), dslDao.countByPno(dto.getCategory()), dto.getCategory());
+	public ProductDto.Page list(Integer pageno, ProductDto.ForList dto) {
+		Pageable pageable = PageRequest.of(pageno-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
+		List<ProductDto.ProductList> products = dslDao.list(pageable, dto.getFieldName(), dto.getIsAsc());
+		return new ProductDto.Page(products, dto.getPageno(), dao.count());
+	}
+	
+	// 카테고리별 상품 리스트
+	@Transactional(readOnly=true)
+	public ProductDto.Page listPerCategory(Integer pageno, ProductDto.ForList dto, Category category) {
+		Pageable pageable = PageRequest.of(pageno-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
+		List<ProductDto.ProductList> products = dslDao.listPerCategory(pageable, dto.getFieldName(), dto.getIsAsc(), category);
+		return new ProductDto.Page(products, dto.getPageno(), dao.count());
 	}
 
 	public CKResponse ckImageUpload(MultipartFile upload) {
