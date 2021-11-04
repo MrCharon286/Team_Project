@@ -8,6 +8,7 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
 import com.example.plantforu.controller.dto.*;
+import com.example.plantforu.controller.dto.OrderDto.OrderProduct;
 import com.example.plantforu.entity.cart.*;
 import com.example.plantforu.entity.product.*;
 import com.example.plantforu.repository.*;
@@ -30,7 +31,7 @@ public class OrderService {
 		List<OrderItem> orders = new ArrayList<>();
 		for(Cart cart:carts) {
 			if(pnos.contains(cart.getPno())) {
-				OrderItem orderItem = cart.toOrderItem();
+				OrderItem orderItem = cart.toCartOrderItem();
 				System.out.println(orderItem);
 				orders.add(orderItem);
 			}
@@ -42,8 +43,8 @@ public class OrderService {
 	public void orderProduct(OrderDto.OrderProduct dto) {
 		HttpSession session = PlantforuUtil.getSession();
 		Product product = productDao.findById(dto.getPno()).orElseThrow(PlantforuException.ProductNotFoundException::new);
-		OrderItem orderItem = OrderItem.builder().orderItemNo(dto.getPno()).pname(product.getPname()).pprice(product.getPprice())
-			.pcount(dto.getPcount()).ototalPrice(dto.getPcount()*product.getPprice()).pimage(PlantforuConstant.PRODUCT_URL+product.getPimage()).build();
+		OrderItem orderItem = OrderItem.builder().pno(dto.getPno()).pname(product.getPname()).pprice(product.getPprice())
+			.pcount(dto.getPcount()).orderItemPrice(dto.getPcount()*product.getPprice()).pimage(PlantforuConstant.PRODUCT_URL+product.getPimage()).build();
 		session.setAttribute("product", Arrays.asList(orderItem));
 	}
 
@@ -58,44 +59,12 @@ public class OrderService {
 		return (List<OrderItem>)session.getAttribute("cart");
 	}
 	
-	@Transactional
-	@SuppressWarnings("unchecked")
-	public void payment(String select, Integer ano, String loginId) {
-		select = select.equals("product") ? "product" : "cart";
-		HttpSession session = PlantforuUtil.getSession();
-		
-		List<OrderItem> orders = (List<OrderItem>)session.getAttribute(select);
-		
-		Address address = addressDao.findById(new AddressId(loginId, ano)).orElseThrow(PlantforuException.AddressNotFoundException::new);
-		Order order = Order.builder().address(address).deliveryStatus(DeliveryStatus.PAY).build();
-		
-		// Address.builder().addressNo(1).username("spring").build()와 같이 파라미터를 만들어 넘기면
-		// JPA는 그 Address가 존재한다는 사실을 모름으로 새로운 주소라고 판단한다 -> 그런데 CascadeType이 없어서 아래 예외 발생
-		// object references an unsaved transient instance - save the transient instance before flushing
-		// Order order = Order.builder().address(Address.builder().addressNo(addressNo).username(loginId).build()).build();
-		orders.forEach(orderItem->order.addOrderItem(orderItem));
-		orderDao.save(order);
-	}
-
 	@Transactional(readOnly=true)
 	public List<Order> readAll(String loginId) {
 		return orderDao.readAll(loginId);
 	}
-
-	@Transactional(readOnly=true)
-	public List<OrderDto.isReviewAvailable> reviewAvailableList(String loginId) {
-		return orderDslDao.reviewAvailableList(loginId);
-	}
-
-	@Transactional(readOnly=true)
-	public OrderDto.ReviewInfo getOrderItem(Integer orderNo, Integer orderItemNo) {
-		return orderDslDao.getOrderItem(orderNo, orderItemNo);
-	}
-
-	@Transactional
-	public void setIsReviewAvailableToFalse(Integer orderNo, Integer orderItemNo) {
-		orderDao.findById(orderNo).orElseThrow(PlantforuException.OrderNotExistException::new).getOrderItems().stream().filter(item->item.getOrderItemNo()==orderItemNo).findFirst().orElseThrow(PlantforuException.OrderItemNotExistException::new).setIsReviewAvailable(false);
-	}
+	
+	
 }
 
 

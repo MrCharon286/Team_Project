@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<link rel="stylesheet" href="/css/main.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/script/main.js"></script>
+<script th:inline="javascript">
+	const pno = [[${order.pno}]]
+	const orderNo = [[${order.orderNo}]]
+	const orderItemNo = [[${order.orderItemNo}]]
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	let _this = undefined;
+	
+	const main={
+		star: 5, 
+		init: function() {
+			$("#write").on("click", this.writeReview);
+			$(".fa").on("mouseenter", this.changeStar);
+			window._this = this;
+		},
+		 
+		writeReview: function() {
+			const param = {
+				pno : pno,
+				orderNo: orderNo,
+				orderItemNo : orderItemNo,
+				content: $("#content").val(),
+				star: window._this.star
+			};
+			$.ajax({url:"/reviews", method:"post", data:param, beforeSend: function(xhr) { xhr.setRequestHeader(header, token)}}).done(close());
+		},
+		
+		changeStar: function() {
+			$(this).prevAll().removeClass("fa-star-o").addClass("fa-star");
+			$(this).removeClass("fa-star-o").addClass("fa-star");
+			$(this).nextAll().removeClass("fa-star").addClass("fa-star-o");
+			console.log($(this).data("star"));
+			window._this.star = $(this).data("star");
+		}
+	};
+	
+	window.onload = function() {
+		main.init();
+	}
+</script>
+<body>
+	<div>
+		<span th:text="${order.manufacturer}"></span> <span th:text="${order.name}"></span>
+	</div>
+	<div>
+		별점을 선택해주세요
+		<i class="fa fa-star" data-star="1"></i>
+		<i class="fa fa-star" data-star="2"></i>
+		<i class="fa fa-star" data-star="3"></i>
+		<i class="fa fa-star" data-star="4"></i>
+		<i class="fa fa-star" data-star="5"></i>
+	</div>
+	<div>
+		<textarea style="width: 400px; height: 300px;" id="content"></textarea>
+		<button id="write">작성</button>
+	</div>
+</body>
+</html>

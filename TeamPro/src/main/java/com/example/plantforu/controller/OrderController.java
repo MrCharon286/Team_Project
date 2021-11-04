@@ -5,7 +5,6 @@ import java.security.*;
 import java.util.*;
 
 import org.springframework.http.*;
-import org.springframework.security.access.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.*;
@@ -24,12 +23,7 @@ public class OrderController {
 	// 장바구니에서 주문을 선택하면 선택한 주문 목록을 다시 확인하는 페이지
 	@GetMapping("/order/read")
 	public void read() {
-	}
-
-	// 새 배송지 추가 화면을 띄우는 메서드
-	@GetMapping("/order/new_address")
-	public void newAddress() {
-	}
+	}	
 	
 	// 주문 완료 후 이동
 	@GetMapping("/order/list")
@@ -47,6 +41,7 @@ public class OrderController {
 		return ResponseEntity.ok().headers(responseHeaders).body(null);
 	}
 	
+	/*
 	// 상품 화면에서 바로 주문을 선택
 	@PostMapping("/orders/product")
 	public ResponseEntity<Void> orderProduct(@RequestBody OrderDto.OrderProduct dto) {
@@ -56,39 +51,20 @@ public class OrderController {
 		responseHeaders.set("Location", uri.toString());
 		return ResponseEntity.ok().headers(responseHeaders).body(null);
 	}
+	*/
 	
 	// 장바구니에서 선택 또는 상품에서 선택해 결제하려는 목록 보여주기
 	@GetMapping(path="/orders", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<OrderItem>> getOrders(String select) {
 		return ResponseEntity.ok(service.getOrders(select));
 	}
-
-	@PostMapping("/orders/payment")
-	public ResponseEntity<Void> payment(String select, Integer ano, Principal principal) {
-		service.payment(select, ano, principal.getName());
-		return ResponseEntity.ok(null);
-	}
 	
+	// 결제는 없음
+	/*
 	@GetMapping("/orders/payment")
 	public ResponseEntity<List<Order>> readAll(Principal principal) {
 		return ResponseEntity.ok(service.readAll(principal.getName()));
 	}
+	*/
 	
-	// /review/available_list의 요청을 받아 리뷰가능한 주문 목록을 리턴
-	@Secured("ROLE_USER")
-	@GetMapping(path="/orders/review_available", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<OrderDto.isReviewAvailable>> isReviewedList(Principal principal) { 
-		return ResponseEntity.ok(service.reviewAvailableList(principal.getName()));
-	}
-	
-	@GetMapping(path="/orders/order_itemno", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<OrderDto.ReviewInfo> getOrderItem(Integer ono, Integer orderItemNo) {
-		return ResponseEntity.ok(service.getOrderItem(ono, orderItemNo));
-	}
-	
-	@GetMapping("/orders/update")
-	public ResponseEntity<Integer> setIsReviewAvailableToFalse(Integer orderNo, Integer orderItemNo) {
-		service.setIsReviewAvailableToFalse(orderNo, orderItemNo);
-		return ResponseEntity.ok(orderItemNo);
-	}
 }

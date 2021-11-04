@@ -3,10 +3,7 @@ package com.example.plantforu.service;
 import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PlantforuException {
-	public static class AddressNotFoundException extends RuntimeException {
-	}
-	
+public class PlantforuException {	
 	public static class ProductNotFoundException extends RuntimeException {
 	}
 

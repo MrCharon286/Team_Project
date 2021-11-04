@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:fragment="nav" id="nav" class="navbar navbar-inverse" style="margin: 2px 0;">
+	<div id="nav_menu" class="container-fluid">
+		<!-- 비로그인 유저에게 보여질 메뉴 -->
+		<ul sec:authorize="isAnonymous()" class="nav navbar-nav" id="menu_anonymous">
+			<li><a href="/product/list">미니 쇼핑몰</a></li>
+			<li><a href="/member/login">로그인</a></li>
+    	</ul>
+    	
+    	<!-- 일반 사용자에게 보여질 메뉴 -->
+    	<ul sec:authorize="hasRole('ROLE_USER')" class="nav navbar-nav" id="menu_authenticated">
+    		<li><a href="/product/list">미니 쇼핑몰</a></li>
+        	<li><a href='/cart/read'>장바구니</a></li>
+			<li><a href="/order/list">주문 목록</a></li>
+			<li><a href="/review/available_list">리뷰가능 목록</a></li>
+			<li><a href="/review/list">리뷰 목록</a></li>
+			<li><a id="member_logout">로그아웃</a></li>
+    	</ul>
+    	
+    	<!-- 관리자에게 보여질 메뉴 -->
+    	<ul sec:authorize="hasRole('ADMIN')" class="nav navbar-nav" id="menu_authenticated">
+        	<li><a href='/admin/product/list'>쇼핑몰</a></li>
+			<li><a href="/admin/product/add">상품 추가</a></li>
+			<li><a href="/admin/stat">상태</a></li>
+			<li><a id="admin_logout">로그아웃</a></li>
+    	</ul>
+    	
+    	<!-- 오른쪽 정렬된 관리자 로그인 메뉴 -->
+    	<ul sec:authorize="isAnonymous()" class="nav navbar-nav navbar-right">
+    		<li><a href="/admin/login">관리자 로그인</a></li>
+    	</ul>
+	</div>
+	<script>
+		// main 객체를 가리키는 this를 저장하는 변수
+		let $this = undefined;
+		
+		const $main = {
+			// json 객체 초기화 메서드
+			init: function() {
+				// 로그아웃 버튼에 대한 이벤트 핸들러 등록
+				// ★★★★★ 자바스크립트 객체의 멤버들끼리 접근하려면 this를 이용해 접근해야한다 ★★★★★
+				$("#nav_menu").on("click", "#member_logout", this.memberLogout);
+				$("#nav_menu").on("click", "#admin_logout", this.adminLogout);
+				
+				// main 객체의 this를 window.$this에 저장
+				window.$this = this;
+			},
+			
+			getAjaxRequest: function(ajaxUrl) {
+				// 페이지 위조를 잡아내기위한 csrf 토큰을 ajax 전송할 때 함께 서버로 보내야 한다
+				// csrf 토큰은 form에서 사용하는 _csrf.token과 ajax에서 사용하는 _csrf.header로 나뉜다
+				// 여기는 ajax이므로 header를 사용하는 데 csrf자체는 fragments인 nav.html이 아닌 메인이 되는 html쪽에 위치해야 한다
+				const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				
+				return { 
+					url: ajaxUrl,
+					method: "post",
+					beforeSend: function(xhr) {
+						// 자바스크립트의 ajax 통신은 XmlHttpRequest라는 전용 요청 객체를 사용한다
+						// 사용방법이 까다로워 jQuery의 ajax는 XmlHttpRequest 요청 객체를 신경쓰지 않아도 되도록 만들어져 있다 
+						// 다만 요청 객체에 인증 정보등 특정 헤더 값을 추가해야 할 경우에는 XmlHttpRequest객체를 사용할 수 있도록 beforeSend 함수를 제공한다
+						xhr.setRequestHeader(header, token)
+					}
+				}
+			},
+			
+			// 멤버 로그아웃
+			memberLogout: function(e) {
+				e.preventDefault();
+				const choice = confirm('로그아웃하시겠습니까?');
+				if(choice==false)
+					return;
+				
+				// ★★★★★ 자바스크립트의 this는 상황에 따라 바뀐다
+				// ★★★★★ 이벤트 핸들러의 경우 this는 이벤트가 발생한 이벤트 소스가 된다
+				// ★★★★★ 즉 여기서 this라고 하면 main 객체가 아닌 "#member_logout" li가 된다
+				// ★★★★★ 대피시켜놓은 window.$this를 이용해 멤버에 접근한다
+				$.ajax(window.$this.getAjaxRequest("http://localhost:8081/member/logout")).done(()=> location.href = '/');
+			},
+			
+			// 관리자 로그아웃
+			adminLogout: function(e) {
+				e.preventDefault();
+				const choice = confirm('로그아웃하시겠습니까?');
+				if(choice==false)
+					return;
+				$.ajax(window.$this.getAjaxRequest("http://localhost:8081/admin/logout")).done(()=> location.href = '/');
+			}
+		};
+		
+		$(document).ready(function() {
+			$main.init();
+		});
+
+	</script>
+</div>
+</body>
+</html>

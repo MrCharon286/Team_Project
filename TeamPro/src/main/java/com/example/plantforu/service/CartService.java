@@ -49,14 +49,15 @@ public class CartService {
 	public List<Cart> read() {
 		return getCarts();
 	}
-
+	
+	
 	public List<Cart> increase(Integer pno) {
 		List<Cart> carts = getCarts();
 		for(Cart cart:carts) {
 			if(cart.getPno()==pno) {
 				Integer pcount = cart.getPcount()+1;
-				Integer pstock = dao.readStock(pno);
-				if(pcount>=pstock)
+				// Integer pstock = dao.readStock(pno);
+				if(pcount>=pno)
 					throw new PlantforuException.OutOfStockException();
 				cart.increase();
 			}
@@ -64,7 +65,8 @@ public class CartService {
 		saveCarts(carts);
 		return carts;
 	}
-
+	 
+	
 	public List<Cart> decrease(Integer pno) {
 		List<Cart> carts = getCarts();
 		for(Cart cart:carts) {
@@ -81,5 +83,8 @@ public class CartService {
 		saveCarts(newCarts);
 		return newCarts;
 	}
+
+	
+	
 }
 

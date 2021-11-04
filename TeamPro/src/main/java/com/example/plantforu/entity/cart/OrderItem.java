@@ -1,14 +1,25 @@
  package com.example.plantforu.entity.cart;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 
-import com.example.plantforu.entity.*;
-import com.example.plantforu.entity.product.Product;
-import com.example.plantforu.util.*;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.*;
-import lombok.experimental.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
@@ -22,7 +33,7 @@ import lombok.experimental.*;
 public class OrderItem {
 	@PrePersist
 	private void init() {
-		this.isReviewAvailable = true;
+		this.pcount = 0;
 	}
 
 	@Id
@@ -30,17 +41,15 @@ public class OrderItem {
 	@SequenceGenerator(name="order_item_seq", sequenceName="order_item_seq", allocationSize=1)
 	private Integer orderItemNo;
 	
+	private Integer pno;
+	
 	@Id
 	@ManyToOne
 	@JoinColumn(name="ono")
 	@JsonIgnore
 	private Order order;
 	
-	@Id
-	@ManyToOne
-	@JoinColumn(name="pno")
-	@JsonIgnore
-	private Product product;
+	
 	
 	@Column(length=20)
 	private String pname;
@@ -49,10 +58,9 @@ public class OrderItem {
 	
 	private Integer pcount;
 	
-	private Integer ototalPrice;
+	private Integer orderItemPrice;
 	
 	@Column(length=20)
 	private String pimage;
 	
-	private Boolean isReviewAvailable;
 }

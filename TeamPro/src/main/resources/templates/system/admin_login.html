@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<link rel="stylesheet" href="/css/main.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/script/main.js"></script>
+<script>
+	$(document).ready(()=>{
+		$("#login").on("click", ()=>{
+			// 아이디를 대문자로 변경해서 넘겨야한다
+			const $username = $("#username").val().toUpperCase();
+			const $password = $("#password").val();
+			
+			const $form = $("<form>").attr("method","post").attr("action","/admin/login").appendTo($("body"));
+			$("<input>").attr("type","hidden").attr("name","username").val($username).appendTo($form);
+			$("<input>").attr("type","hidden").attr("name","password").val($password).appendTo($form);
+			$("<input>").attr("type","hidden").attr("name","password").val($password).appendTo($form);
+			$("<input>").attr("type","hidden").attr("name",$("#csrf").attr("name")).val($("#csrf").val()).appendTo($form);
+			$form.submit();
+		});
+	})
+</script>
+</head>
+<body>
+<div id="page">
+	<header id="header" th:replace="/fragments/header">
+	</header>
+	<nav id="nav" th:replace="/fragments/nav">
+	</nav>
+	<div id="main">
+		<aside id="aside" th:replace="/fragments/aside">
+		</aside>
+		<section id="section">
+			<h1>관리자 로그인</h1>
+			<div class="form-group">
+				<label for="username">아이디</label>
+				<input id="username" type="text" name="username" class="form-control">
+				<span class="helper-text" id="username_msg"></span>
+			</div>
+			<div class="form-group">
+				<label for="password">비밀번호</label>
+				<input id="password" type="password" name="password" class="form-control">
+				<span class="helper-text" id="password_msg"></span>
+			</div>
+			<div>
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" id="csrf" />
+			</div>
+			<button class="btn btn-success" id="login">로그인</button>
+		</section>
+	</div>
+	<footer id="footer" th:replace="/fragments/footer">
+	</footer>
+</div>
+</body>
+</html>

@@ -5,8 +5,7 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import com.example.plantforu.entity.*;
-
+import com.example.plantforu.entity.BaseCreateTimeEntity;
 import lombok.*;
 import lombok.experimental.*;
 
@@ -25,8 +24,12 @@ public class Order extends BaseCreateTimeEntity  {
 	@SequenceGenerator(name="order_seq", sequenceName="order_seq", allocationSize=1)
 	private Integer ono;
 	
-	private Integer pprice;
+	private Integer oprice;
 	
+	@ManyToOne
+	@JoinColumns({@JoinColumn(name="orderer", referencedColumnName="username"), @JoinColumn(name="ano", referencedColumnName="ano")})
+	private Address address;
+
 	
 	
 	@OneToMany(mappedBy="order", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
@@ -35,9 +38,9 @@ public class Order extends BaseCreateTimeEntity  {
 	public void addOrderItem(OrderItem orderItem) {
 		if(this.orderItems==null)
 			this.orderItems = new ArrayList<>();
-		this.pprice = this.pprice==null? 0 : this.pprice;
+		this.oprice = this.oprice==null? 0 : this.oprice;
 		orderItem.setOrder(this);
 		this.orderItems.add(orderItem);
-		this.pprice += orderItem.getOtotalPrice();
+		this.oprice += orderItem.getOrderItemPrice();
 	}
 }

@@ -1,0 +1,20 @@
+package com.example.plantforu.security;
+
+import java.io.*;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+import org.springframework.security.access.*;
+import org.springframework.security.web.access.*;
+import org.springframework.stereotype.*;
+
+// 권한없음이 발생했을 때 /error/e403으로 유도할 AccessDenialHandler
+@Component
+public class PlantforuAccessDeniedHandler implements AccessDeniedHandler {
+	@Override
+	public void handle(HttpServletRequest request, HttpServletResponse response,
+			AccessDeniedException accessDeniedException) throws IOException, ServletException {
+		request.getRequestDispatcher("/error/e403").forward(request, response);
+	}
+}
