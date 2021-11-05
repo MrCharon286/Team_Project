@@ -3,8 +3,6 @@ package com.example.plantforu.service;
 import java.io.*;
 import java.util.*;
 
-import javax.validation.*;
-
 import org.springframework.data.domain.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.*;
@@ -14,7 +12,6 @@ import org.springframework.web.multipart.*;
 import com.example.plantforu.controller.dto.*;
 import com.example.plantforu.entity.product.*;
 import com.example.plantforu.repository.*;
-import com.example.plantforu.service.PlantforuException.*;
 import com.example.plantforu.util.*;
 
 import lombok.*;
@@ -39,7 +36,7 @@ public class ProductService {
 	public ProductDto.Page listPerCategory(Integer pageno, ProductDto.ForList dto, Category category) {
 		Pageable pageable = PageRequest.of(pageno-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
 		List<ProductDto.ProductList> products = dslDao.listPerCategory(pageable, dto.getFieldName(), dto.getIsAsc(), category);
-		return new ProductDto.Page(products, dto.getPageno(), dao.count());
+		return new ProductDto.Page(products, dto.getPageno(), dslDao.countByPno(category));
 	}
 
 	public CKResponse ckImageUpload(MultipartFile upload) {

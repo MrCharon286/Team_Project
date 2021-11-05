@@ -58,8 +58,8 @@ public class ProductDslRepository {
 		return product.category.eq(category);
 	}
 
-	/*public Long countByPno(Category category) {
+	public Long countByPno(Category category) {
 		return factory.from(product).select(product.pno.count()).where(product.pno.gt(0), withCategory(category)).fetchCount();
-	}*/
+	}
 
 }

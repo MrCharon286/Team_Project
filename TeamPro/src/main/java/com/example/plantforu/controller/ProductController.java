@@ -2,11 +2,9 @@ package com.example.plantforu.controller;
 
 import java.io.*;
 import java.nio.file.*;
-import java.security.*;
 
 import javax.validation.*;
 
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.stereotype.*;
 import org.springframework.validation.*;
@@ -17,9 +15,6 @@ import com.example.plantforu.controller.dto.*;
 import com.example.plantforu.entity.product.*;
 import com.example.plantforu.service.*;
 import com.example.plantforu.util.*;
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;
 
 import lombok.*;
 
