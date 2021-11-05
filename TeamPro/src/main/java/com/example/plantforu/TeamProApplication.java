@@ -1,5 +1,6 @@
 package com.example.plantforu;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.*;
@@ -26,6 +27,8 @@ public class TeamProApplication {
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
-
-	
+	@Bean
+	public ModelMapper getModelMapper() {
+		return new ModelMapper();
+	}
 }

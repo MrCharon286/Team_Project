@@ -4,11 +4,21 @@
 <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <title>Insert title here</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< HEAD
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <link rel="stylesheet" href="/css/main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/script/main.js"></script>
+=======
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- 각종 css, js를 읽어오는 js : jQuery를 이용해서 -->
+<script src="/script/main.js"></script>
+<!-- 아래줄을 main.js에 옮기면 자바스크립트는 sec:authorize가 뭔지 모르기때문에 무시. 무조건 실행 -->
+<script sec:authorize="isAuthenticated()" src="/script/websocket.js"></script>
+
+>>>>>>> f351767ee8c9c6a2068256b3d1e97c16dd563b41
 <script th:inline="javascript">
 	const msg = [[${msg}]]
 	$(document).ready(()=>{
@@ -32,12 +42,16 @@
 			<div class="alert alert-danger" style="display:none;" id="msg">
   				<strong>작업 실패 </strong> <span id="msg_span"></span>
 			</div>
+<<<<<<< HEAD
 			<h1>본문입니다</h1>
 			<ul>
 				<li><a href="/test1">누구나 접근 가능</a></li>
 				<li><a href="/admin/test2">경로를 이용해 관리자만 접근 가능</a></li>
 				<li><a href="/test3">권한을 이용해 사용자만 접근 가능</a></li>
 			</ul>
+=======
+			<h1>로그인 해주세요</h1>
+>>>>>>> f351767ee8c9c6a2068256b3d1e97c16dd563b41
 		</section>
 	</div>
 	<footer id="footer" th:replace="/fragments/footer">
