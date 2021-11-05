@@ -1,0 +1,64 @@
+@charset "UTF-8";
+	#left {
+		float: left;
+		width: 500px;
+	}
+	#right {
+		float: right;
+		width: 256px;
+	}
+	#section {
+		overflow: hidden;
+	}
+	
+	.count_area {
+		width: 35px;
+		height: 35px;
+		line-height: 35px;
+		display: inline-block;
+		text-align: center;
+		font-size: 1.25em;
+	}
+	#inc, #dec {
+		background-color: #ddd;
+		cursor: pointer;
+	}
+	
+	#manufacturer, #name {
+		font-size: 1.5em;
+		font-weight: bold;
+		color: #222;
+	}
+	
+	#price {
+		margin-top: 15px;
+		font-size: 24px;
+		color: rgb(107,144,220);
+		font-weight: 700;
+		text-align: right;
+	}
+	
+	#total_price {
+		font-size: 1.75em;
+		font-weight: bold;
+		color:rgb(233,96,97);
+	}
+	
+	#buy, #add_to_cart {
+		width: 125px;
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color: white;
+		font-weight: bold;
+		border: 0;
+		outline: 0;
+	}
+	
+	#buy {
+		background-color: #3fc910;
+	}
+	
+	#add_to_cart {
+		background-color: #565656;
+	}

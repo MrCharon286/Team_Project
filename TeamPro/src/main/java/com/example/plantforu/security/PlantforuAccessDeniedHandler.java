@@ -15,8 +15,6 @@ public class PlantforuAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		HttpSession session = request.getSession();
-		session.setAttribute("msg", "잘못된 접근입니다");
-		response.sendRedirect("/");
+		request.getRequestDispatcher("/error/e403").forward(request, response);
 	}
 }
