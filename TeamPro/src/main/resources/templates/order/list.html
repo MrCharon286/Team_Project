@@ -37,10 +37,10 @@
 					const $tr = $("<tr>").appendTo($table);
 					$("<td>").text(orderItem.manufacturer).appendTo($tr);
 					const $td = $("<td>").appendTo($tr);
-					$("<a>").attr("href", "/product/read?pno=" + orderItem.pno).text(orderItem.pname).appendTo($td);
-					$("<td>").text(orderItem.pname).appendTo($tr);	
-					$("<td>").text(orderItem.pprice).appendTo($tr);
-					$("<td>").text(orderItem.pcount).appendTo($tr);	
+					$("<a>").attr("href", "/product/read?pno=" + orderItem.pno).text(orderItem.name).appendTo($td);
+					$("<td>").text(orderItem.name).appendTo($tr);	
+					$("<td>").text(orderItem.price).appendTo($tr);
+					$("<td>").text(orderItem.count).appendTo($tr);	
 				})
 				$("<hr>").appendTo($section);
 			});

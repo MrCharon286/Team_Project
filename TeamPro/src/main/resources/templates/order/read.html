@@ -35,7 +35,7 @@
 			
 			$("#add_new_address").on("click", this.addNewAddress);
 			$("#address_area").on("click", ".address", this.changeAddress);
-			// $("#payment").on("click", this.payment);
+			$("#payment").on("click", this.payment);
 		},
 		
 		// 주문 정보 출력
@@ -69,7 +69,7 @@
 			$.ajax("/addresses").done(result=>{
 				if(result=="") {
 					$("#address").prop("disabled","true");
-					// $("#payment").prop("disabled","true");
+					$("#payment").prop("disabled","true");
 					$("#forwardingAddress").text("등록된 배송지가 없습니다. 배송지를 추가하세요");
 				} else {
 					addresses = result;
@@ -140,7 +140,7 @@
 		<section id="section">
 			<table class="table">
 				<thead>
-					<tr><th>사진</th><th>상품정보</th><th>수량</th><th>상품금액</th></tr>
+					<tr><th>사진</th><th>상품정보</th><th>판매자</th><th>수량</th><th>상품금액</th></tr>
 				</thead>
 				<tbody id="list">
 				</tbody>

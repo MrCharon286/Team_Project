@@ -31,18 +31,13 @@ header, nav, aside, footer, section {
 
 #aside {
 	width: 200px;
-<<<<<<< HEAD
 	height: 320px;
-=======
-	height: 303px;
->>>>>>> f351767ee8c9c6a2068256b3d1e97c16dd563b41
 	float: left;
 	background-color: #ccc;
 }
 
 #aside div {
 	width: 150px;
-<<<<<<< HEAD
 	height: 100px;
 	line-height: 100px;
 	margin: 5px auto;
@@ -54,14 +49,6 @@ header, nav, aside, footer, section {
 	background-color: #eee;
 	border: 1px solid #ddd;
 	text-align: center;
-=======
-	background-color: #eee;
-	border: 1px solid #ddd;
-	height: 100px;
-	line-height: 100px;
-	text-align: center;
-	margin: 0 auto;
->>>>>>> f351767ee8c9c6a2068256b3d1e97c16dd563b41
 }
 
 section {
