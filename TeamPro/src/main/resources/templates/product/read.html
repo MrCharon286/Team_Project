@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<title>상품 주문</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/product_read.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/script/main.js"></script>
+<style>
+	#reviews {
+		width: 100%;
+	}
+	#reviews tr {
+		height: 50px;
+	}
+	#reviews tr td {
+	}
+</style>
+<script>
+	let product = undefined;
+	let _this = undefined;
+	
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	// 현재 화면을 담는 장바구니 1개
+	const cart = {
+		init: function() {
+			this.pno = product.pno;
+			this.name = product.name;
+			this.manufacturer = product.manufacturer;
+			this.price = product.price;
+			this.count = 1;	
+			this.image = product.image;
+			this.cartPrice = this.price * this.count;
+		},
+		
+		// 장바구니에 담은 상품 개수 증가, 감소
+		increase() {
+			this.count++;
+			this.cartPrice = this.count * product.price;
+		},
+		decrease() {
+			this.count--;
+			this.cartPrice = this.count * product.price;
+		}
+	};
+	
+	const main = {
+		init: function() {
+			$("#inc").on("click", this.incProduct);
+			$("#dec").on("click", this.decProduct);
+			window._this = this;
+			$("#add_to_cart").on("click", this.addToCart);
+			$("#buy").on("click", this.buy);
+			
+			const pno = location.search.substr(5);
+			$.ajax("/products/" + pno).done(result=>{
+				console.log(result);
+				product = result;
+				this.printPage();
+				// 리뷰가 있을 경우 리뷰를 출력
+				if(product.reviews.length>0)
+					this.printReview();
+			});
+		},
+		
+		// 개수와 총 가격을 출력하는 일이 여러번이라 메서드로 분리
+		printTotalCountAndPrice: function() {
+			$("#total_price").text(cart.cartPrice);
+			$("#total_count").text(cart.count);
+		}, 
+		
+		printPage: function() {
+			$("#image").attr("src", product.image);
+			$("#manufacturer").text(product.manufacturer);
+			$("#name").text(product.name);
+			$("#price span").text(product.price);
+			
+			// 상품 페이지로 들어오면 1개의 상품을 담은 장바구니 객체를 생성
+			cart.init();	
+			$("#count").text(cart.count);
+			this.printTotalCountAndPrice();
+			
+			$("#product_info_area").append(product.info);
+		},
+		
+		// 리뷰 출력
+		printReview: function() {
+			$("#review_area").empty();
+			const $table = $("<table id='reviews'>").appendTo($("#review_area"));
+			$.each(product.reviews, function(idx, review) {
+				const $tr = $("<tr>").appendTo($table);
+				$("<td>").text(review.rno).css("width","5%").appendTo($tr);
+				const $td = $("<td>").css("width","15%").appendTo($tr);
+				for(var i=1; i<=review.star; i++) {
+					$("<i class='fa fa-star'></i>'").appendTo($td);
+				}
+				$("<td>").text(review.content).css("width","55%").appendTo($tr);
+				$("<td>").text(review.username).css("width","10%").appendTo($tr);
+				$("<td>").text(review.createTime).css("width","15%").appendTo($tr);
+			});
+		},
+		
+		// 옵션이 있는 경우 상품 개수 증가/감소
+		incProduct: function() {
+			let number = $("#count").text();
+			const param = {pno:product.pno, count:++number};
+			$.ajax({url:"/products/stock", data:param}).done(count=>{
+				cart.increase();
+				$("#count").text(cart.count);
+				window._this.printTotalCountAndPrice()
+			}).fail(result=>alert(result.responseText));
+		},
+		decProduct: function() {
+			let number = $("#count").text();
+			if(number>1) {
+				cart.decrease();
+				$("#count").text(cart.count);
+				window._this.printTotalCountAndPrice()
+			}
+		},
+		
+		addToCart: function() {
+			$.ajax({
+				url:"/carts",
+				method:"post",
+				data: JSON.stringify(cart),
+				contentType: "application/json",
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token)
+				}
+			}).done(location.href = "/cart/read");
+		},
+		
+		buy: function() {
+			const param = {
+				pno: product.pno,
+				count: $("#count").text()
+			};
+			$.ajax({
+				url:"/orders/product",
+				method:"post",
+				data: JSON.stringify(param),
+				contentType: "application/json",
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token)
+				}
+			}).done((result, text, response)=>location.href = response.getResponseHeader('Location'));
+		}
+	};
+	
+	window.onload = function() {
+		main.init();
+	}
+</script>
+</head>
+<body>
+	<div id="page">
+		<header id="header" th:replace="/fragments/header">
+		</header>
+		<nav id="nav" th:replace="/fragments/nav">
+		</nav>
+		<div id="main">
+			<aside th:replace="/fragments/aside">
+			</aside>
+			<section id="section">
+				<div id="product_area">
+					<div id="left">
+						<img id="image" style="width:100%">
+					</div>
+					<div id="right">
+						<div id="manufacturer"></div>
+						<div id="name"></div>
+						<div id="price"><span></span>원</div>
+						<!-- 옵션이 없는 경우 바로 개수 선택 div -->
+						<hr>
+						<div id="product_div">
+							<div class='count_area' id='dec'>-</div>
+							<div class='count_area' id='count'></div>
+							<div class='count_area' id='inc'>+</div>
+						</div>
+						<hr>
+						<div id="price_div" style="overflow:hidden;">
+							<span style="font-weight:bold; font-size:1.25em;">총 금액</span>
+							<div style="float:right;">
+								<span style="color:#999">총 수량<span id="total_count"></span>개</span>
+								<span><span id="total_price"></span>원</span>
+							</div>
+						</div>
+						<hr>
+						<div>
+							<button id="buy" sec:authorize="isAuthenticated()">구매하기</button>
+							<button id="add_to_cart" sec:authorize="isAuthenticated()">장바구니</button>
+							<p sec:authorize="isAnonymous()" style="color:blue; font-size: 1.25em;"> 로그인하셔야 주문가능합니다</p>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div id="star_area">
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#product_info_area">상품 정보</a></li>
+						<li><a data-toggle="tab" href="#review_area">고객 리뷰</a></li>
+						<li><a data-toggle="tab" href="#delivery_area">배송/반품 안내</a></li>
+					</ul>
+					<div class="tab-content">
+  						<div id="product_info_area" class="tab-pane fade in active">
+    						<h3>상품정보 페이지</h3>
+  						</div>
+  						<div id="review_area" class="tab-pane fade">
+    						<h3>고객 리뷰가 없습니다</h3>
+  						</div>
+  						<div id="delivery_area" class="tab-pane fade">
+    						<h3>배송/반품 안내</h3>
+    						<p>빠르게 배송해 드릴까요?</p>
+  						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<footer id="footer" th:replace="/fragments/footer">
+		</footer>
+	</div>
+</body>
+</html>

@@ -1,6 +1,5 @@
 package com.example.plantforu.repository;
 
-import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.*;
 
 import com.example.plantforu.entity.product.*;

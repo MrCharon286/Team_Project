@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<link rel="stylesheet" href="/css/main.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/script/main.js"></script>
+<script src="/script/ckeditor/ckeditor.js"></script>
+<style>
+	#options span {
+		display: inline-block;
+		width: 10%;
+		text-align: center;
+	}
+	#options .options { 
+		width: 90%;
+		display: inline-block; 
+	}
+</style>
+<script>
+	// nav.html의 자바스크립트에서 만든 _this와 main은 fragments로 모든 html에 포함된다 -> 이름이 겹쳐서 사용할 수 없다
+	// nav.html에서 window.onload를 사용. window.onload는 두번 이상 사용할 수 없다 -> $(document).ready로 변경
+	// nav.html의 코드를 $this, $main으로 변경했음
+
+	let _this = undefined;
+	
+	const main = {
+		init: function() {
+			// 대분류 요청 : /categories								null
+			// 중,소분류 요청 : /categories?categoryCode=				 ""
+			// 대분류 출력 -> 화면 로딩되면
+			$.ajax("/admin/categories").done(categories=>{
+				const $large = $("#large");
+				$.each(categories, (idx, category)=> $("<option>").text(category.categoryName).val(category.categoryCode).appendTo($large));
+			});
+			
+			$("#large").on("change", this.selectLargeCategory);
+			$("#medium").on("change", this.selectMediumCategory);
+			$("#add").on("click", this.addProduct);
+					
+			window._this = this;
+			
+			// csrf를 포함한 파일 업로드 주소를 만들고 ckeditor 설정
+			const $ckUploadUrlWithCsrf = '/product/image?_csrf=' + $("#csrf").val();
+			CKEDITOR.replace('info', { 
+				filebrowserUploadUrl : $ckUploadUrlWithCsrf
+			});
+			
+			$("#small").on("change", this.selectSmallCategory);
+		},
+		
+		// 대분류 선택
+		selectLargeCategory: function() {
+			const $medium = $("#medium");
+			const $small = $("#small");
+			$.ajax("/admin/categories?categoryCode=" + $(this).val()).done(categories=>{
+				$medium.empty();
+				$medium.append('<option disabled selected>중분류를 선택하세요</option>');
+				$small.empty();
+				$small.append('<option disabled selected>소분류를 선택하세요</option>');
+				$.each(categories, (idx, category)=> $("<option>").text(category.categoryName).val(category.categoryCode).appendTo($medium));
+			});
+	
+		},
+		
+		// 중분류 선택
+		selectMediumCategory: function() {
+			const $small = $("#small");
+			$.ajax("/admin/categories?categoryCode=" + $(this).val()).done(categories=>{
+				$small.empty();
+				$small.append('<option disabled selected>소분류를 선택하세요</option>');
+				$.each(categories, (idx, category)=> $("<option>").text(category.categoryName).val(category.categoryCode).appendTo($small));
+			});
+		},
+		
+		// 소분류 선택
+		selectSmallCategory: function() {
+			$("#manufacturer").val($("#small option:checked").text());
+		},
+		
+		// 상품추가
+		addProduct: function() {
+			// FormData 객체를 만들고 ck가 관리하는 #info에 입력한 내용을 추가
+			const formData = new FormData(document.getElementById("add_form"));
+			formData.append("info", CKEDITOR.instances['info'].getData());
+			
+			const token = $("meta[name='_csrf']").attr("content");
+			const header = $("meta[name='_csrf_header']").attr("content");
+			
+			$.ajax({
+				url: "/admin/products/new",
+				method: "post",
+				data: formData,
+				processData: false,	
+				contentType: false,
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token)
+				}
+			}).done(location.href = "/admin/product/list");
+		}
+	};
+	
+	window.onload = function() {
+		main.init();
+	}
+</script>
+</head>
+<body>
+<div id="page">
+	<header id="header" th:replace="/fragments/header">
+	</header>
+	<nav id="nav" th:replace="/fragments/nav">
+	</nav>
+	<div id="main">
+		<aside th:replace="/fragments/aside">
+		</aside>
+		<section id="section">
+			<form id="add_form">
+				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" id="csrf" />
+				<div>
+					대분류:
+					<select id="large">
+						<option disabled selected>선택하세요</option>
+					</select>
+					중분류:
+					<select id="medium">
+						<option class="msg" disabled selected>대분류를 선택하세요</option>
+					</select>
+					소분류:
+					<select id="small" name="categoryCode">
+						<option class="msg" disabled selected>대분류와 소분류를 선택하세요</option>
+					</select>
+				</div>
+				<img id="show_sajin" height="240px">
+				<div class="form-group">
+					<label for="image">상품 이미지</label>
+					<input type="file" name="image" id="image" class="form-control"  accept=".jpg,.jpeg,.png,.gif">
+				</div>
+				<div class="form-group">
+					<label for="manufacturer">제조사</label>
+					<span id="manufacturer_msg"></span>
+					<div class="form-group">
+						<input type="text" class="form-control" id="manufacturer" name="manufacturer">
+					</div>
+				</div>	
+				<div class="form-group">
+					<label for="name">상품명</label>
+					<span id="name_msg"></span>
+					<div class="form-group">
+						<input type="text" class="form-control" id="name" name="name">
+					</div>
+				</div>	
+				<div class="form-group">
+					<label for="price">가격</label>
+					<span id="price_msg"></span>
+					<div class="form-group">
+						<input type="text" class="form-control" id="price" name="price">
+					</div>
+				</div>
+				<div class="form-group">
+					<textarea class="form-control" rows="5" id="info" name="info"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="stock">재고량 선택</label>
+					<select id="stock" name="stock" class="form-control">
+						<option selected="selected">0</option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+     			</div>	
+     			<div class="form-group" style="text-align: center;">
+					<button type="button" id="add" class="btn btn-info">추가</button>
+				</div>
+			</form>
+		</section>
+	</div>
+	<footer id="footer" th:replace="/fragments/footer">
+	</footer>
+</div>
+</body>
+</html>
