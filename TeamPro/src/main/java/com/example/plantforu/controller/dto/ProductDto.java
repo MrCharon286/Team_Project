@@ -36,12 +36,10 @@ public class ProductDto {
 	public static class ProductList {
 		private Integer pno;
 		private String pname;
-		private String image;
+		private String pimage;
 		private Integer pprice;
-		private Double pavgOfRating;
-		private Integer pcountOfRating;
 		public void changeImageName() {
-			this.image = PlantforuConstant.PRODUCT_URL + this.image;
+			this.pimage = PlantforuConstant.PRODUCT_URL + this.pimage;
 		}
 	}
 	
@@ -63,31 +61,10 @@ public class ProductDto {
 		private MultipartFile sajin;
 		private String pdetail;
 		private Integer pprice;
-		private Integer pstock;
 		private Integer ctgno;
 		public Product toEntity() {
-			return Product.builder().pname(pname).pprice(pprice).pstock(pstock).ctgno(ctgno).build();
+			return Product.builder().pname(pname).pprice(pprice).ctgno(ctgno).build();
 		}
-	}
-
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class DisApproved {
-		private Integer pno;
-		private String pname;
-		@JsonProperty("orderday")
-		@JsonFormat(pattern="yyyy년 MM월 dd일")
-		private LocalDateTime createTime;
-	}	
-	
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class QnaInfo {
-		private String writeday;
-		private String name;
-		private Integer pno;
 	}
 	
 	// JsonView 어노테이션을 이용해 DTO를 구성하기 위한 클래스

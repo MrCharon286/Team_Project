@@ -5,6 +5,7 @@ import java.nio.file.*;
 
 import javax.validation.*;
 
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.stereotype.*;
 import org.springframework.validation.*;
@@ -27,7 +28,7 @@ public class ProductController {
 	
 	// 게시물 목록
 	@GetMapping("/product/list")
-	public void productListRecent() {
+	public void productList() {
 	}
 	
 	// 게시물 보기
@@ -70,13 +71,7 @@ public class ProductController {
 	// 상품 정보
 	@JsonView(ProductDto.ReadForMember.class)
 	@GetMapping(path="/products/{pno}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductImage> productDetail(@PathVariable Integer pno) throws JsonProcessingException {
+	public ResponseEntity<Product> productDetail(@PathVariable Integer pno) throws JsonProcessingException {
 		return ResponseEntity.ok(service.read(pno));
-	}
-	
-	// 재고 확인
-	@GetMapping(path="/products/stock", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> checkStock(Integer pno, Integer count) {
-		return ResponseEntity.ok(service.checkStock(pno, count));
 	}
 }
