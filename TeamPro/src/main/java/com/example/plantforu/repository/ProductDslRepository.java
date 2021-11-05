@@ -31,7 +31,7 @@ public class ProductDslRepository {
 		this.product = QProduct.product;
 	}
 
-	public List<ProductDto.ProductList> list(Pageable pageable, Category category, String fieldName, Boolean isAsc) {
+	public List<ProductDto.ProductList> list(Pageable pageable, String fieldName, Boolean isAsc) {
 		// 동적으로 정렬을 지정
 		// new OrderSpecifier(isAsc==true? Order.ASC : Order.DESC, Expressions.path(Product.class, fieldName)))
 		// 첫번째 파라미터는 오름차순/내림차순 지정 : 파라미터 타입이 Order. 그래서 Order.ASC 또는 Order.DESC로 타입을 맞춰준다
@@ -39,7 +39,15 @@ public class ProductDslRepository {
 		//		동적 표현식 생성을 위한 접근 경로는 Expression 객체
 		//		Expressions는 접근 경로 생성을 도와주는 정적 팩토리 클래스
 		//			파라미터로는 클래스와 그 클래스에서 사용할 필드명 
-		return factory.from(product).select(Projections.constructor(ProductDto.ProductList.class, product.category, product.pno, product.pname, product.pprice))
+		System.out.println(fieldName);
+		return factory.from(product).select(Projections.constructor(ProductDto.ProductList.class, product.pno, product.pname, product.pprice))
+			.orderBy(new OrderSpecifier(isAsc==true? Order.ASC : Order.DESC, Expressions.path(Product.class, fieldName)))
+			.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+	}
+	
+	public List<ProductDto.ProductList> listPerCategory(Pageable pageable, String fieldName, Boolean isAsc, Category category) {
+		return factory.from(product).select(Projections.constructor(ProductDto.ProductList.class, product.pno, product.pname, product.pprice))
+			.where(withCategory(category))
 			.orderBy(new OrderSpecifier(isAsc==true? Order.ASC : Order.DESC, Expressions.path(Product.class, fieldName)))
 			.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
 	}

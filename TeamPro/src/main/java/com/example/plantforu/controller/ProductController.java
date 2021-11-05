@@ -2,11 +2,9 @@ package com.example.plantforu.controller;
 
 import java.io.*;
 import java.nio.file.*;
-import java.security.*;
 
 import javax.validation.*;
 
-import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.stereotype.*;
 import org.springframework.validation.*;
@@ -17,9 +15,6 @@ import com.example.plantforu.controller.dto.*;
 import com.example.plantforu.entity.product.*;
 import com.example.plantforu.service.*;
 import com.example.plantforu.util.*;
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;
 
 import lombok.*;
 
@@ -109,9 +104,16 @@ public class ProductController {
 	
 	// 상품 목록
 	@GetMapping(path="/product/list", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductDto.Page> productList(@Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<ProductDto.Page> productList(@RequestParam(defaultValue="1") Integer pageno, @Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
 		PlantforuUtil.bindingResultCheck(bindingResult);
-		return ResponseEntity.ok(service.list(dto));
+		return ResponseEntity.ok(service.list(pageno, dto));
+	}	
+
+	// 카테고리별 상품 목록
+	@GetMapping(path="/product/list/{category}", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductDto.Page> productList(@RequestParam(defaultValue="1") Integer pageno, @Valid ProductDto.ForList dto, @PathVariable Category category, BindingResult bindingResult) throws BindException {
+		PlantforuUtil.bindingResultCheck(bindingResult);
+		return ResponseEntity.ok(service.listPerCategory(pageno, dto, category));
 	}	
 	
 	// 상품 정보
