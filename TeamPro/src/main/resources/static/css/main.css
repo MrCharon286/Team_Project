@@ -8,9 +8,9 @@ ul, li {
 	list-style: none;
 }
 
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 header, nav, aside, footer, section {
-	font-family : "Nanum Gothic", sans-serif;
+	font-family: 'Pacifico', cursive;
 }
 
 /* 전체적인 레이아웃 설정 */

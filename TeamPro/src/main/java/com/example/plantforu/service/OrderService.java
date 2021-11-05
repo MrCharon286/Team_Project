@@ -21,7 +21,6 @@ import lombok.*;
 public class OrderService {
 	private final ProductRepository productDao;
 	private final OrderRepository orderDao;
-	private final OrderDslRepository orderDslDao;
 	
 	// 장바구니 주문 처리
 	@SuppressWarnings("unchecked")
