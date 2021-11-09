@@ -101,7 +101,7 @@
 		incProduct: function() {
 			const param = {
 				pno: $(this).data("pno"),
-				optionNo : $(this).data("optionNo")
+				// optionNo : $(this).data("optionNo")
 			};
 			$.ajax({url:"/carts/increase", method:"patch", data:param, beforeSend: function(xhr) { xhr.setRequestHeader(header, token) }}).done(result=>{
 				carts = result;
@@ -112,7 +112,7 @@
 		decProduct: function() {
 			const param = {
 				pno: $(this).data("pno"),
-				optionNo : $(this).data("optionNo")
+				// optionNo : $(this).data("optionNo")
 			};
 			$.ajax({url:"/carts/decrease", method:"patch", data:param, beforeSend: function(xhr) { xhr.setRequestHeader(header, token) }}).done(result=>{
 				carts = result;

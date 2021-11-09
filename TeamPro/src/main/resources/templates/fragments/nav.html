@@ -9,17 +9,15 @@
 	<div id="nav_menu" class="container-fluid">
 		<!-- 비로그인 유저에게 보여질 메뉴 -->
 		<ul sec:authorize="isAnonymous()" class="nav navbar-nav" id="menu_anonymous">
-			<li><a href="/product/list">미니 쇼핑몰</a></li>
+			<li><a href="/product/list">쇼핑몰</a></li>
 			<li><a href="/member/login">로그인</a></li>
     	</ul>
     	
     	<!-- 일반 사용자에게 보여질 메뉴 -->
     	<ul sec:authorize="hasRole('ROLE_USER')" class="nav navbar-nav" id="menu_authenticated">
-    		<li><a href="/product/list">미니 쇼핑몰</a></li>
+    		<li><a href="/product/list">쇼핑몰</a></li>
         	<li><a href='/cart/read'>장바구니</a></li>
 			<li><a href="/order/list">주문 목록</a></li>
-			<li><a href="/review/available_list">리뷰가능 목록</a></li>
-			<li><a href="/review/list">리뷰 목록</a></li>
 			<li><a id="member_logout">로그아웃</a></li>
     	</ul>
     	
