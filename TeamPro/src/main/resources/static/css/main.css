@@ -20,9 +20,10 @@ header, nav, aside, footer, section {
 }
 
 #header  {
-	border : 1px solid #d89a1d;
+	
 	letter-spacing: 0.75em
 }
+
 #header p {
 	font-size: 1.75em;
 	font-weight: bold;
@@ -53,10 +54,13 @@ header, nav, aside, footer, section {
 
 section {
 	width: 800px;
-	padding: 20px;
+	padding: 10px;
 	float: right;
-	border: 1px solid orange;
+		
 	min-height: 600px;
+}
+section li {
+	font-size: 1.5em;
 }
 
 #main {
