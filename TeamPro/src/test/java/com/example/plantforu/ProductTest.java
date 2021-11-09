@@ -26,7 +26,7 @@ public class ProductTest {
 	
 	@Test
 	public void insertTest() {
-		for(int i=38; i<=50; i++) {
+		for(int i=43; i<=60; i++) {
 			dao.save(Product.builder().pno(i).pdetail("aaa"+i).pimage("bbb"+i).pprice(2000).pname(i+"번 상품").category(Category.음료).build());
 		}
 	}

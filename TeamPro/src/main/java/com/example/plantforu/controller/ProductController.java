@@ -23,15 +23,20 @@ import lombok.*;
 public class ProductController {
 	private final ProductService service;
 	
-	// 게시물 목록
-	/*@GetMapping("/product/list")
+	// 상품 목록
+	@GetMapping("/product/list")
 	public void productList() {
 	}
 	
-	// 게시물 보기
+	// 특정 상품 보기
 	@GetMapping("/product/read")
 	public void productDetail() {
-	}*/
+	}
+	
+	// 상품 등록
+	@GetMapping("/product/insert")
+	public void productInsert() {
+	}
 	
 	// 상품 이미지 보기
 	@GetMapping(path="/products/image", produces=MediaType.IMAGE_JPEG_VALUE)
@@ -83,30 +88,19 @@ public class ProductController {
 		return null;
 	}
 	
-	// ck 이미지 업로드
-	@PostMapping(value="/product/image", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CKResponse> ckImageUpload(MultipartFile upload) {
-		return ResponseEntity.ok(service.ckImageUpload(upload));
-	}
-	
-	// ck 이미지(상품설명) 업로드
-	@PostMapping(value="/product/detail", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CKResponse> ckDetailUpload(MultipartFile upload) {
-		return ResponseEntity.ok(service.ckImageUpload(upload));
-	}
-	
 	// 상품 추가
 	@PostMapping(path="/product/add", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Product> productInsert(@Valid ProductDto.Create dto, BindingResult bindingResult) throws BindException {
-		PlantforuUtil.bindingResultCheck(bindingResult);
+	public ResponseEntity<?> productInsert(@Valid ProductDto.Create dto, BindingResult bindingResult) throws BindException {
+		if(bindingResult.hasErrors())
+			throw new BindException(bindingResult);
 		return ResponseEntity.ok(service.add(dto));
 	}
 	
 	// 상품 목록
-	@GetMapping(path="/product/list", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductDto.Page> productList(@RequestParam(defaultValue="1") Integer pageno, @Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
+	@GetMapping(path="/product/list/all", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ProductDto.Page> productList(@Valid ProductDto.ForList dto, BindingResult bindingResult) throws BindException {
 		PlantforuUtil.bindingResultCheck(bindingResult);
-		return ResponseEntity.ok(service.list(pageno, dto));
+		return ResponseEntity.ok(service.list(dto));
 	}	
 
 	// 카테고리별 상품 목록
@@ -123,7 +117,7 @@ public class ProductController {
 	}
 	
 	// 상품 정보 수정
-	@PutMapping(path="/product/read/{pno}", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path="/product/read", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> productUpdate(@Valid ProductDto.Update dto, BindingResult bindingResult) throws BindException {
 		if(bindingResult.hasErrors())
 			throw new BindException(bindingResult);
@@ -131,7 +125,7 @@ public class ProductController {
 	}
 	
 	// 상품 삭제
-	@DeleteMapping(path="/product/read/{pno}")
+	@DeleteMapping(path="/product/read")
 	public ResponseEntity<Product> productDelete(@PathVariable Integer pno) throws BindException {
 		return ResponseEntity.ok(service.delete(pno));
 	}

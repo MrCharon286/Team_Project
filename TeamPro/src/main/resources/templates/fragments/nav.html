@@ -20,7 +20,7 @@
 			<a class="navbar-brand" href="/">HOME</a>
 		</div>
 		<ul class="nav navbar-nav" id="menu_anonymous"> <!--sec:authorize="isAnonymous()" --> 
-			<li><a href="/product/list">상품목록</a></li>
+			<li><a href="/product/list?pageno=1">상품목록</a></li>
     	</ul>
     	<ul sec:authorize="isAuthenticated()" class="nav navbar-nav" id="menu_authenticated">
         	<li><a href='/member/read'>내 정보</a></li>

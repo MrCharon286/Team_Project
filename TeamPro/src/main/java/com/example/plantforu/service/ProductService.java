@@ -25,8 +25,8 @@ public class ProductService {
 	// 상품 전체 리스트
 	// readOnly를 지정하면 읽기 전용이므로 EntityManager가 변경을 대비한 스냅샷을 저장하지 않아 메모리 사용량을 최적화 -> 수동으로 flush하지 않으면 업데이트되지 않는다
 	@Transactional(readOnly=true)
-	public ProductDto.Page list(Integer pageno, ProductDto.ForList dto) {
-		Pageable pageable = PageRequest.of(pageno-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
+	public ProductDto.Page list(ProductDto.ForList dto) {
+		Pageable pageable = PageRequest.of(dto.getPageno()-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
 		List<ProductDto.ProductList> products = dslDao.list(pageable, dto.getFieldName(), dto.getIsAsc());
 		return new ProductDto.Page(products, dto.getPageno(), dao.count());
 	}
@@ -38,20 +38,6 @@ public class ProductService {
 		List<ProductDto.ProductList> products = dslDao.listPerCategory(pageable, dto.getFieldName(), dto.getIsAsc(), category);
 		return new ProductDto.Page(products, dto.getPageno(), dslDao.countByPno(category));
 	}
-
-	public CKResponse ckImageUpload(MultipartFile upload) {
-		if(upload!=null && upload.isEmpty()==false && upload.getContentType().toLowerCase().startsWith("image/")) {
-			String imageName = UUID.randomUUID().toString() + PlantforuUtil.getImageMultipartExtension(upload);
-			File file = new File(PlantforuConstant.TEMP_FOLDER, imageName);
-			try {
-				upload.transferTo(file);
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}
-			return new CKResponse(1, imageName, PlantforuConstant.PRODUCT_URL + imageName);
-		}
-		return null;
-	}	
 	
 	public Product add(ProductDto.Create dto) {
 		Product product = dto.toEntity();
