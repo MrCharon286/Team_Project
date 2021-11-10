@@ -1,7 +1,6 @@
 package com.example.plantforu.entity.member;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,21 +11,20 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-@Data
+@Getter
+@Setter
+@ToString(exclude="authorities")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -36,58 +34,45 @@ import lombok.experimental.Accessors;
 public class Member {
 	@PrePersist
 	public void init() {
-		loginFailCnt = 0;
 		enabled = false;
 	}
 
 	@Id
-	@Column(length = 30, name="user_email")
+	@Column(length=30)
 	private String useremail;
 
-	@Column(length = 20)
+	@Column(length=80)
 	@JsonIgnore
 	private String password;
 
-	@Column(length = 5)
+	@Column(length=5)
 	private String userirum;
 
-	@Column(length = 13)
-	private Integer usertel;
+	@Column(length=13)
+	private String usertel;
 
 
-	@Column(length = 20)
 	@JsonIgnore
-	private String authority;
-	//권한 부여?
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
-		if (this.useremail.equals("user")) {
-			auth.add(new SimpleGrantedAuthority("ROLE_USER"));
-		} 
-		return auth;
-	}
+	@OneToMany(mappedBy="member", cascade={CascadeType.MERGE, CascadeType.REMOVE})
+	private Set<Authority> authorities;
 	
 	@JsonIgnore
-	private Integer loginFailCnt;
-	
-	@JsonIgnore
-	private Boolean enabled;
+	private boolean enabled;
 	
 	@JsonIgnore
 	@Column(length=20)
 	private String checkcode;
+	
+	public void addJoinInfo(String checkcode, String encodedPassword, List<String> authorities) {
+		if(this.authorities==null)
+			this.authorities = new HashSet<Authority>();
+		this.checkcode = checkcode;
+		this.password = encodedPassword;
+		authorities.forEach(authorityName->this.authorities.add(new Authority(this, authorityName)));
+	}
 
 	public void loginSuccess() {
-		this.loginFailCnt = 0;
 		this.enabled = true;
 	}
 
-	public void loginFail() {
-		if(this.loginFailCnt<4)
-			this.loginFailCnt++;
-		else {
-			this.loginFailCnt++;
-			this.enabled = false;
-		}
-	}
 }

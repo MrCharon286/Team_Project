@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 import javax.validation.*;
 
-import com.example.plantforu.util.util.validation.validator.UseremailValidator;
+import com.example.plantforu.util.util.validation.validator.UseremailmailValidator;
 import com.example.plantforu.util.util.validation.validator.UsertelValidator;
 
 // 적용 위치 : 클래스, 필드, 메소드, 파라미터

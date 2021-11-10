@@ -28,7 +28,7 @@ public class MemberDto {
 		
 		@NotNull
 		@Usertel
-		private Integer usertel;
+		private String usertel;
 
 		public Member toEntity() {
 			return Member.builder().useremail(useremail).userirum(userirum).password(password).usertel(usertel).build();
@@ -38,7 +38,7 @@ public class MemberDto {
 	@Data
 	public class Update {
 		@NotNull
-		@Userirum
+		@Useremail
 		private String useremail;
 		
 		@Password
@@ -57,11 +57,11 @@ public class MemberDto {
 	@Data
 	public class ResetPwd {
 		@NotNull
-		@Userirum
+		@Useremail
 		private String useremail;
 		
 		@NotNull
-		@Useremail
+		@Usertel
 		private Integer useretel;
 	}
 	

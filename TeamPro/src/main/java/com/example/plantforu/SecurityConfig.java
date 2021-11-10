@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.crypto.password.*;
 
 import com.example.plantforu.security.CustomUserDetailsService;
-import com.example.plantforu.security.LoginFailureHandler;
 import com.example.plantforu.security.LoginSuccessHandler;
 import com.example.plantforu.security.PlantforuAccessDeniedHandler;
 
@@ -20,7 +19,6 @@ import lombok.*;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final PasswordEncoder passwordEncoder;
-	private final LoginFailureHandler loginFailureHandler;
 	private final LoginSuccessHandler loginSuccessHandler;
 	private final PlantforuAccessDeniedHandler PlantforuAccessDeniedHandler;
 	private final CustomUserDetailsService service;
@@ -40,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().exceptionHandling().accessDeniedHandler(PlantforuAccessDeniedHandler);
 		
 		http.formLogin().loginPage("/member/login").loginProcessingUrl("/member/login").usernameParameter("useremail")
-			.passwordParameter("password").successHandler(loginSuccessHandler).failureHandler(loginFailureHandler);
+			.passwordParameter("password").successHandler(loginSuccessHandler);
 		
 		http.logout().logoutUrl("/member/logout").logoutSuccessUrl("/");
 	}

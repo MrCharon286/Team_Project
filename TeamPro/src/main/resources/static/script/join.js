@@ -102,7 +102,7 @@ const join = () =>{
 	// processData : $.ajax는 자바스크립트 객체를 urlencoded로 자동 변환 -> false를 줘서 금지
 	// contentType : false면 multipart/form-data
 	$.ajax({
-		url: "/member/new",
+		url: "/member/new_join",
 		method: "post",
 		data: formData,
 		processData: false,

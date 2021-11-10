@@ -32,9 +32,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 		// 1. 사용자가 없으면 InternalAuthenticationServiceException을 발생시켜라
 		Member member = dao.findById(useremail).orElseThrow(()->new InternalAuthenticationServiceException("USER NOT FOUND"));
 		
-		// 2-1. useremail, password, enabled로 UserDetails 객체를 생성
-		Account account = Account.builder().username(member.getUseremail()).password(member.getPassword()).isEnabled(member.getEnabled()).build();
+		// 2-1. username, password, enabled로 UserDetails 객체를 생성
+		Account account = Account.builder().useremail(member.getUseremail()).password(member.getPassword()).isEnabled(member.isEnabled()).build();
 		
+		// 2-2. 권한 정보를 추가(권한 이름을 가지고 SimpleGrantedAuthority 객체를 생성)
+		Collection<GrantedAuthority> authorities = member.getAuthorities().stream().map(a->new SimpleGrantedAuthority(a.getAuthorityName())).collect(Collectors.toList());
+		
+		account.setAuthorities(authorities);
 		return account;
 	}
 }

@@ -1,7 +1,11 @@
 package com.example.plantforu.member.service;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang3.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
@@ -23,24 +27,42 @@ public class MemberService {
 	private final MailUtil mailUtil;
 	private final PasswordEncoder passwordEncoder;
 	
+	@Scheduled(cron = "0 0 4 ? * THU")
+	public void deleteMemberWithInvalidCheckcode() {
+		List<Member> members = dao.findByCheckcodeIsNotNull();
+		dao.deleteAll(members);
+	}
+	
 	public void useremailAvailabelCheck(String useremail) {
 		if(dao.existsByUseremail(useremail)==true)
 			throw new MemberFail.UseremailExistException();
 	}
 	
-	public void telAvailabelCheck(Integer usertel) {
+	public void telAvailabelCheck(String usertel) {
 		if(dao.existsByUsertel(usertel)==true)
 			throw new MemberFail.UsertelExistException();
 	}
 
 	public void join(MemberDto.Join dto) {
 		Member member = dto.toEntity();
+		String checkcode = RandomStringUtils.randomAlphanumeric(20);
 		String encodedPassword = passwordEncoder.encode(member.getPassword());
+		
+		// member에 추가해야 할 필드 : checkcode, 비밀번호, Set<Authority>
+		member.addJoinInfo(checkcode, encodedPassword, Arrays.asList("ROLE_USER"));
+		dao.save(member);
+		mailUtil.sendJoinCheckMail("admin@zmall.com", member.getUseremail(), checkcode);
+	}
+	
+	@Transactional
+	public void joinCheck(String checkcode) {
+		Member member = dao.findByCheckcode(checkcode).orElseThrow(MemberFail.JoinCheckFailException::new);
+		member.setCheckcode(null).setEnabled(true);
 	}
 
 	@Transactional(readOnly=true)
-	public String findUseremail(String useremail) {
-		return dao.findUseremailByUsertel(useremail).orElseThrow(MemberFail.MemberNotFoundException::new);
+	public String findUseremail(String usertel) {
+		return dao.findUseremailByUsertel(usertel).orElseThrow(MemberFail.MemberNotFoundException::new);
 	}
 
 	@Transactional
@@ -55,8 +77,8 @@ public class MemberService {
 
 	// 기존 비밀번호가 확인되면 새 비밀번호를 암호화해서 저장
 	@Transactional
-	public void changePassword(ChangePwd dto, String loginEmail) {
-		Member member = dao.findById(loginEmail).orElseThrow(MemberFail.MemberNotFoundException::new);
+	public void changePassword(ChangePwd dto, String useremail) {
+		Member member = dao.findById(useremail).orElseThrow(MemberFail.MemberNotFoundException::new);
 		if(dto.getPassword()!=null && dto.getNewPassword()!=null) {
 			if(passwordEncoder.matches(dto.getPassword(), member.getPassword())==false)
 				throw new MemberFail.PasswordCheckException();
@@ -65,22 +87,22 @@ public class MemberService {
 	}
 	
 	@Transactional(readOnly=true)
-	public void checkPassword(String password, String loginId) {
-		Member member = dao.findById(loginId).orElseThrow(MemberFail.MemberNotFoundException::new);
+	public void checkPassword(String password, String useremail) {
+		Member member = dao.findById(useremail).orElseThrow(MemberFail.MemberNotFoundException::new);
 		if(passwordEncoder.matches(password, member.getPassword())==false)
 			throw new MemberFail.PasswordCheckException();
 	}
 
-	// Member 처리 : 프사에 주소를 추가, transient 필드인 days에 값을 추가해서 내보내자 =>>수정필요
-	public Member read(String loginEmail) {
-		Member member = dao.findById(loginEmail).orElseThrow(MemberFail.MemberNotFoundException::new);	
+	// Member 처리 : 수정필요
+	public Member read(String useremail) {
+		Member member = dao.findById(useremail).orElseThrow(MemberFail.MemberNotFoundException::new);	
 		return member;
 	}
 	
 
 	@Transactional
-	public void update(MemberDto.Update dto, String loginId) {
-		Member member = dao.findById(loginId).orElseThrow(MemberFail.MemberNotFoundException::new);
+	public void update(MemberDto.Update dto, String useremail) {
+		Member member = dao.findById(useremail).orElseThrow(MemberFail.MemberNotFoundException::new);
 		
 		if(dto.getUseremail()!=null)
 			member.setUseremail(dto.getUseremail());
@@ -93,8 +115,8 @@ public class MemberService {
 		
 	}
 
-	public void resign(String loginId) {
-		dao.deleteById(loginId);
+	public void resign(String useremail) {
+		dao.deleteById(useremail);
 	}
 
 }

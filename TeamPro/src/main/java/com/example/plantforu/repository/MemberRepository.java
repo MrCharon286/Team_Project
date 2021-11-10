@@ -19,5 +19,5 @@ public interface MemberRepository extends CrudRepository<Member, String> {
 
 	boolean existsByUseremail(String useremail);
 
-	boolean existsByUsertel(Integer usertel);
+	boolean existsByUsertel(String usertel);
 }

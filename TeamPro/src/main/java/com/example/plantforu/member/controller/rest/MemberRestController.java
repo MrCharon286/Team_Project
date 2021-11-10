@@ -43,7 +43,7 @@ public class MemberRestController {
 	
 	// 전화번호 사용 여부
 	@GetMapping(path="/member/usertel/check", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<?> telAvailableCheck(@Usertel Integer usertel) {
+	public ResponseEntity<?> telAvailableCheck(@Usertel String usertel) {
 		service.telAvailabelCheck(usertel);
 		return ResponseEntity.ok(PlantforuResponseConstant.TEL_AVAILABLE_MSG);
 		}
@@ -57,11 +57,9 @@ public class MemberRestController {
 		return ResponseEntity.ok(PlantforuResponseConstant.JOIN_MSG);
 	}
 	
-	/*check code를 사용하지 않으니 필요없지 않을까하네요
-	 * 
 	// 회원 가입 확인 : 체크 코드를 확인한 다음 REST로 화면 이동을 시키자
 	// 300대 상태 코드는 redirect를 의미한다
-	@GetMapping("/members/join/check")
+	@GetMapping("/member/join/check")
 	public ResponseEntity<?> joinCheck(String checkcode) {
 		service.joinCheck(checkcode);
 		URI uri = UriComponentsBuilder.newInstance().path("/member/login").build().toUri();
@@ -69,11 +67,10 @@ public class MemberRestController {
 		httpHeaders.setLocation(uri);
 		return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
 	}
-	*/
 	
 	// 아이디 찾기
 	@GetMapping(path="/member/find/useremail", produces = MediaType.TEXT_PLAIN_VALUE)
-	public ResponseEntity<?> findEmailRead(@Useremail String useremail) {
+	public ResponseEntity<?> findtelRead(@Usertel String usertel) {
 		URI uri = UriComponentsBuilder.newInstance().path("/member/login").build().toUri();
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setLocation(uri);
@@ -117,7 +114,7 @@ public class MemberRestController {
 	
 	// 내 정보 변경
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping("member/change/info")
+	@PostMapping("/member/view/myinfo")
 	public ResponseEntity<?> memberInfoUpdate(@Valid MemberDto.Update dto, BindingResult bindingResult, Principal principal) throws BindException {
 		if(bindingResult.hasErrors())
 			throw new BindException(bindingResult);
@@ -127,7 +124,7 @@ public class MemberRestController {
 	
 	// 회원 탈퇴 후 루트 페이지로 이동(회원 탈퇴 버튼이 내정보에 있다. 따라서 루트로 강제이동 시키자)
 	@PreAuthorize("isAuthenticated()")
-	@DeleteMapping("member/change/deleteinfo")
+	@DeleteMapping("/member/view/myinfo")
 	public ResponseEntity<?> memberDrop(SecurityContextLogoutHandler handler, HttpServletRequest req, HttpServletResponse res, Authentication authentication )  {
 		service.resign(authentication.getName());
 		handler.logout(req, res, authentication);

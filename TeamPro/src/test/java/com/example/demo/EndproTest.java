@@ -14,9 +14,8 @@ public class EndproTest {
 	MemberService service;
 	
 	@Test
-	public void insertTest1() {
-		Member m = Member.builder().useremail("asd@naver.com").password("qweqwe123!").userirum("이현승")
-				.usertel(010-5211-9893).build();
+	public void test() {
+		service.useremailAvailabelCheck(null);
 	}
 	
 	

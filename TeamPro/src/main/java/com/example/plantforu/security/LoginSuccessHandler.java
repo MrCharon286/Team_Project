@@ -35,7 +35,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);		
 		RedirectStrategy rs = new DefaultRedirectStrategy();
 		String password = request.getParameter("password");
-		if(password.length()>=20)
+		if(password.length()>=80)
 			rs.sendRedirect(request, response, "/member/change_password");
 		else {
 			if(savedRequest!=null)
