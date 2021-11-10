@@ -33,8 +33,8 @@ public class ProductService {
 	
 	// 카테고리별 상품 리스트
 	@Transactional(readOnly=true)
-	public ProductDto.Page listPerCategory(Integer pageno, ProductDto.ForList dto, Category category) {
-		Pageable pageable = PageRequest.of(pageno-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
+	public ProductDto.Page listPerCategory(ProductDto.ForList dto, Category category) {
+		Pageable pageable = PageRequest.of(dto.getPageno()-1, PlantforuConstant.PRODUCT_PAGE_SIZE);
 		List<ProductDto.ProductList> products = dslDao.listPerCategory(pageable, dto.getFieldName(), dto.getIsAsc(), category);
 		return new ProductDto.Page(products, dto.getPageno(), dslDao.countByPno(category));
 	}
@@ -79,8 +79,9 @@ public class ProductService {
 		MultipartFile pdetailfile = dto.getPdetailfile();
 		if(pdetailfile!=null && pdetailfile.isEmpty()==false) {
 			String pdetail = PlantforuUtil.savePdetail(pdetailfile, product.getPname());
-			product.setPimage(pdetail);
+			product.setPdetail(pdetail);
 		}
+		System.out.println(product.getPname());
 		return dao.save(product);
 	}
 	

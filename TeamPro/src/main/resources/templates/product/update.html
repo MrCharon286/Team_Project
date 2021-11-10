@@ -14,17 +14,19 @@
 	}
 </style>
 <script>
+	let pno = location.search.substr(5);
+
 	$(function() {
-		$("#add").on("click", function() {
+		$("#update").on("click", function() {
 			const formData = new FormData(document.getElementById("add_form"));
 			// const param = {name:"spring", age:11} -> ?name=spring&age=11				processData(자바스크립트는 객체는 자동으로 urlencoded된다)
 			$.ajax({
-				url: "/product/add",
-				method: "post",
+				url: "/product/update/"+ pno,
+				method: "put",
 				data: formData,
 				processData: false,	
 				contentType: false								// contentType을 multipart/form-data로 지정하려면 $.ajax는 false로 줘야한다 
-			}).done(location.href = "/product/list?pageno=1");
+			}).done(location.href = "/product/read?pno="+ pno);
 		});
 	});
 </script>
@@ -41,7 +43,7 @@
 		<section id="section">
 			<form id="add_form">
 				<div class="form-group">
-					<label for="stock">카테고리 선택</label>
+					<label for="category_label">카테고리 선택</label>
 					<select id="category" name="category" class="form-control">
 						<option disabled="disabled" selected="selected">카테고리를 선택하세요</option>
 						<option>프로틴</option>
@@ -51,13 +53,15 @@
 					</select>
      			</div>	
    				<div class="form-group">
-					<label for="pname">상품명</label>
+					<label for="pname_label">상품명</label>
+					<span id="pname_msg"></span>
 					<div class="form-group">
 						<input type="text" class="form-control" id="pname" name="pname">
 					</div>
 				</div>	
 				<div class="form-group">
-					<label for="pprice">가격</label>
+					<label for="pprice_label">가격</label>
+					<span id="pprice_msg"></span>
 					<div class="form-group">
 						<input type="text" class="form-control" id="pprice" name="pprice">
 					</div>
@@ -71,7 +75,7 @@
 					<input type="file" name="pdetailfile" id="pdetailfile" class="form-control"  accept=".jpg,.jpeg,.png,.gif">
 				</div>
      			<div class="form-group" style="text-align: center;">
-					<button type="button" id="add" class="btn btn-info">추가</button>
+					<button type="button" id="update" class="btn btn-info">변경</button>
 				</div>
 				<hr>
 			</form>

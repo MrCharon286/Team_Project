@@ -124,6 +124,21 @@
 		//		.done(result=>printCartWithoutOption(result));
 		//});
 	});
+
+	$(function() {
+		$("#update").on("click", function() {
+			location.href = "/product/update?pno="+product.pno;
+		});
+	});	
+	
+	$(function() {
+		$("#delete").on("click", function() {
+			$.ajax({
+				url: "/product/read/" + product.pno,
+				method: "delete",
+			}).done(location.href = "/product/list?pageno=1");
+		});
+	});
 </script>
 </head>
 <body>
@@ -158,6 +173,12 @@
 				</div>
 				<div id="bottom">
 					<img id="pdetail" style="width:100%">
+				</div>
+     			<div class="form-group" style="float:left">
+					<button type="button" id="update" class="btn btn-info">수 정</button>
+				</div>
+     			<div class="form-group" style="float:right">
+					<button type="button" id="delete" class="btn btn-info">삭 제</button>
 				</div>
 			</section>
 		</div>

@@ -38,6 +38,11 @@ public class ProductController {
 	public void productInsert() {
 	}
 	
+	// 상품 수정 화면
+	@GetMapping("/product/update")
+	public void productUpdateScreen() {
+	}
+	
 	// 상품 이미지 보기
 	@GetMapping(path="/products/image", produces=MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<byte[]> showImage(String imagename) throws IOException {
@@ -105,9 +110,9 @@ public class ProductController {
 
 	// 카테고리별 상품 목록
 	@GetMapping(path="/product/list/{category}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductDto.Page> productList(@RequestParam(defaultValue="1") Integer pageno, @Valid ProductDto.ForList dto, @PathVariable Category category, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<ProductDto.Page> productList(@Valid ProductDto.ForList dto, @PathVariable Category category, BindingResult bindingResult) throws BindException {
 		PlantforuUtil.bindingResultCheck(bindingResult);
-		return ResponseEntity.ok(service.listPerCategory(pageno, dto, category));
+		return ResponseEntity.ok(service.listPerCategory(dto, category));
 	}	
 	
 	// 상품 정보
@@ -116,8 +121,14 @@ public class ProductController {
 		return ResponseEntity.ok(service.read(pno));
 	}
 	
+	// 상품 정보 수정 화면
+	@GetMapping(path="/product/update", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Product> productUpdateScreen(@PathVariable Integer pno) {
+		return ResponseEntity.ok(service.read(pno));
+	}
+	
 	// 상품 정보 수정
-	@PutMapping(path="/product/read", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path="/product/update/{pno}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Product> productUpdate(@Valid ProductDto.Update dto, BindingResult bindingResult) throws BindException {
 		if(bindingResult.hasErrors())
 			throw new BindException(bindingResult);
@@ -125,7 +136,7 @@ public class ProductController {
 	}
 	
 	// 상품 삭제
-	@DeleteMapping(path="/product/read")
+	@DeleteMapping(path="/product/read/{pno}")
 	public ResponseEntity<Product> productDelete(@PathVariable Integer pno) throws BindException {
 		return ResponseEntity.ok(service.delete(pno));
 	}
