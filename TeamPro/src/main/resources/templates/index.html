@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<title>♥Plant For U♥</title>
+<title>플랜포유</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -32,9 +32,9 @@
 			<div class="alert alert-danger" style="display:none;" id="msg">
   				<strong>작업 실패 </strong> <span id="msg_span"></span>
 			</div>
-			<h1>플랜포유에 오신것을 환영합니다♥</h1>
+			<h1>플랜포유 메인</h1>
 			<ul>
-				<li><a href="/test1">모든 사용자</a></li><br>
+				<br><li><a href="/test1">모든 사용자</a></li><br>
 				<li><a href="/admin/test2">관리자 전용(경로)</a></li><br>
 				<li><a href="/test3">사용자 전용(권한)</a></li>
 			</ul>

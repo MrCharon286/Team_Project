@@ -5,33 +5,33 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div th:fragment="nav" id="nav" class="navbar navbar-inverse" style="margin: 0 auto; text-align: center;">
+<div th:fragment="nav" id="nav" style= "margin: 0 auto; text-align: center;">
 	<div id="nav_menu" class="container-fluid">
 		<!-- 비로그인 유저에게 보여질 메뉴 -->
 		<ul sec:authorize="isAnonymous()" class="nav navbar-nav" id="menu_anonymous">
-			<li><a href="/product/list">쇼핑몰</a></li>
-			<li><a href="/member/login">로그인</a></li>
+			<li><a href="/product/list" style="color: #8c8c8c;">쇼핑몰</a></li>
+			<li><a href="/member/login" style="color: #8c8c8c;">로그인</a></li>
     	</ul>
     	
     	<!-- 일반 사용자에게 보여질 메뉴 -->
     	<ul sec:authorize="hasRole('ROLE_USER')" class="nav navbar-nav" id="menu_authenticated">
-    		<li><a href="/product/list">쇼핑몰</a></li>
-        	<li><a href='/cart/read'>장바구니</a></li>
-			<li><a href="/order/list">주문 목록</a></li>
-			<li><a id="member_logout">로그아웃</a></li>
+    		<li><a href="/product/list" style="color: #8c8c8c;">쇼핑몰</a></li>
+        	<li><a href='/cart/read' style="color: #8c8c8c;">장바구니</a></li>
+			<li><a href="/order/list" style="color: #8c8c8c;">주문 목록</a></li>
+			<li><a id="member_logout" style="color: #8c8c8c;">로그아웃</a></li>
     	</ul>
     	
     	<!-- 관리자에게 보여질 메뉴 -->
     	<ul sec:authorize="hasRole('ADMIN')" class="nav navbar-nav" id="menu_authenticated">
-        	<li><a href='/admin/product/list'>쇼핑몰</a></li>
-			<li><a href="/admin/product/add">상품추가</a></li>
-			<li><a href="/admin/stat">상태</a></li>
-			<li><a id="admin_logout">로그아웃</a></li>
+        	<li><a href='/admin/product/list' style="color: #8c8c8c;">쇼핑몰</a></li>
+			<li><a href="/admin/product/add" style="color: #8c8c8c;">상품추가</a></li>
+			<li><a href="/admin/stat" style="color: #8c8c8c;">상태</a></li>
+			<li><a id="admin_logout" style="color: #8c8c8c;">로그아웃</a></li>
     	</ul>
     	
     	<!-- 오른쪽 정렬된 관리자 로그인 메뉴 -->
     	<ul sec:authorize="isAnonymous()" class="nav navbar-nav navbar-right">
-    		<li><a href="/admin/login">관리자 로그인</a></li>
+    		<li><a href="/admin/login" style="color: #8c8c8c;">관리자 로그인</a></li>
     	</ul>
 	</div>
 	<script>
