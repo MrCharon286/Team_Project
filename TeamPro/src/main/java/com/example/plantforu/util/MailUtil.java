@@ -1,16 +1,13 @@
 package com.example.plantforu.util;
 
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 import org.springframework.beans.factory.annotation.*;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.*;
 import org.springframework.stereotype.*;
 
-import com.example.plantforu.entity.member.dto.Mail;
-
+import com.example.plantforu.web.dto.*;
 
 @Component
 public class MailUtil {
@@ -22,7 +19,8 @@ public class MailUtil {
 		StringBuffer buf = new StringBuffer("<p>회원가입을 위한 안내 메일입니다</p>");
 		buf.append("<p>가입 확인을 위해 아래 링크를 클릭하세요</p>");
 		buf.append("<p>가입 확인 링크 :");
-		buf.append("<a href='http://localhost:8081/member/join/check?checkcode=");
+		buf.append("<a href='http://localhost:8081/members/join/check?checkcode=");
+		buf.append(checkCode);
 		buf.append("'>클릭하세요</a></p>");
 		mail.setText(buf.toString());
 		sendMail(mail);

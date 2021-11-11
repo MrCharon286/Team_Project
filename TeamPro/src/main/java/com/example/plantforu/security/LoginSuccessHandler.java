@@ -12,8 +12,7 @@ import org.springframework.security.web.savedrequest.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
-import com.example.plantforu.entity.member.Member;
-import com.example.plantforu.repository.MemberRepository;
+import com.example.plantforu.domain.member.entity.*;
 
 import lombok.*;
 
@@ -35,7 +34,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);		
 		RedirectStrategy rs = new DefaultRedirectStrategy();
 		String password = request.getParameter("password");
-		if(password.length()>=80)
+		if(password.length()>=20)
 			rs.sendRedirect(request, response, "/member/change_password");
 		else {
 			if(savedRequest!=null)

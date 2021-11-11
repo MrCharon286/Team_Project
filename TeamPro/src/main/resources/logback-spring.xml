@@ -6,7 +6,7 @@
 		</encoder>
 	</appender>
 	<!--  내가 만든 클래스에 대한 로깅 설정 -->
-	<logger name="com.example" level="info" />
+	<logger name="com.icia" level="info" />
 	
 	<!--  3rd party 로깅 설정 -->
 	<logger name="org.springframework" level="info" />

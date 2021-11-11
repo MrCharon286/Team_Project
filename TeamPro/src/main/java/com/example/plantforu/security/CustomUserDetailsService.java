@@ -10,8 +10,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 
-import com.example.plantforu.entity.member.Member;
-import com.example.plantforu.repository.MemberRepository;
+import com.example.plantforu.domain.member.entity.*;
 
 import lombok.*;
 
@@ -27,13 +26,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Transactional(readOnly=true)
 	@Override
-	public UserDetails loadUserByUsername(String useremail) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		// 1. 사용자가 없으면 InternalAuthenticationServiceException을 발생시켜라
-		Member member = dao.findById(useremail).orElseThrow(()->new InternalAuthenticationServiceException("USER NOT FOUND"));
+		Member member = dao.findById(username).orElseThrow(()->new InternalAuthenticationServiceException("USER NOT FOUND"));
 		
 		// 2-1. username, password, enabled로 UserDetails 객체를 생성
-		Account account = Account.builder().useremail(member.getUseremail()).password(member.getPassword()).isEnabled(member.isEnabled()).build();
+		Account account = Account.builder().username(member.getUsername()).password(member.getPassword()).isEnabled(member.getEnabled()).build();
 		
 		// 2-2. 권한 정보를 추가(권한 이름을 가지고 SimpleGrantedAuthority 객체를 생성)
 		Collection<GrantedAuthority> authorities = member.getAuthorities().stream().map(a->new SimpleGrantedAuthority(a.getAuthorityName())).collect(Collectors.toList());

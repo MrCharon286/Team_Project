@@ -5,8 +5,6 @@ import java.util.*;
 import org.springframework.security.core.*;
 import org.springframework.security.core.userdetails.*;
 
-import com.example.plantforu.entity.member.Member;
-
 import lombok.*;
 
 @Data
@@ -14,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Account implements UserDetails {
-	private String useremail;
+	private String username;
 	private String password;
 	private boolean isEnabled;
 	@Getter
@@ -27,7 +25,7 @@ public class Account implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return useremail;
+		return username;
 	}
 
 	@Override

@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 import org.springframework.web.util.*;
 
-import com.example.plantforu.entity.member.MemberFail;
-import com.example.plantforu.entity.member.MemberFail.MemberNotFoundException;
-import com.example.plantforu.entity.member.MemberFail.PasswordCheckException;
-import com.example.plantforu.entity.member.dto.BindExceptionMessage;
+import com.example.plantforu.domain.member.entity.*;
+import com.example.plantforu.domain.member.entity.MemberFail.*;
+import com.example.plantforu.web.dto.*;
 
 @ControllerAdvice
 public class MemberControllerAdvice {

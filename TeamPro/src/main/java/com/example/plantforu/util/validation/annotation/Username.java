@@ -10,10 +10,10 @@ import com.example.plantforu.util.validation.validator.*;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 // 언제 동작할거니?
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PasswordValidator.class)
-public @interface Password {
+@Constraint(validatedBy = UsernameValidator.class)
+public @interface Username {
 	// 검증 실패시 출력할 기본 메시지
-	String message() default "비밀번호는 특수문자를 포함하는 영숫자와 특수문자 8~10자입니다";
+	String message() default "아이디는 영숫자 8~10자입니다";
 	
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {}; 
